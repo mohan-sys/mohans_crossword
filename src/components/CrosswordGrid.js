@@ -1,88 +1,159 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function CrosswordGrid({crossword}) {
+function CrosswordGrid({ words, gridSize }) {
 
-    const gridSize = 10;
+    const [grid, setGrid] = useState(
+        Array.from({ length: gridSize }, () => Array(gridSize).fill(''))
+    );
 
-    const grid = Array(gridSize).fill(null).map(() => Array(gridSize).fill(null));
 
-    const placeWord = (word, startX, startY, direction) => {
-        for(let i = 0; i < word.length; i++){
-            if(direction === 'across'){
-                if(startX + i < gridSize){
-                    grid[startY][startX + i] = word[i];
-                }
-            }
-            else if(direction === 'down') {
-                if (startY + i < gridSize) {
-                    grid[startY + i][startX] = word[i];
-                }
-            }
+    const cellNumbers = {};
+    const acrossClues = [];
+    const downClues = [];
+
+    words.forEach(({ word, startX, startY, direction, clue, number }) => {
+        cellNumbers['${startY}-${startX}'] = number;
+        if (direction === 'across') {
+            acrossClues.push({ number, clue, word });
+        } else {
+            downClues.push({ number, clue, word });
         }
+    });
+
+    const handleInputChange = (e, rowIndex, colIndex) => {
+        const value = e.target.value.toUpperCase();
+        if (value.length > 1) return;
+
+        const newGrid = grid.map(row => row.slice());
+        newGrid[rowIndex][colIndex] = value;
+        setGrid(newGrid);
     };
 
-    placeWord('BIOLOGY', 0, 0, 'across');
-    placeWord('GRAVITY', 2, 2, 'across');
-    placeWord('ATOM', 4, 4, 'across');
-    placeWord('PLANET', 6, 6, 'across');
-    placeWord('SQUARE', 0, 0, 'down');
-    placeWord('MITOCHONDRIA', 1, 1, 'down');
-    placeWord('PHOTOSYNTHESIS', 3, 3, 'down');
-    placeWord('ELEMENT', 5, 5, 'down');
+    const isCellEditable = (rowIndex, colIndex) => {
+        return words.some(({ word, startX, startY, direction }) => {
+            if (direction === 'across') {
+                return rowIndex === startY && colIndex >= startX && colIndex < startX + word.length;
+            } else {
+                return colIndex === startX && rowIndex >= startY && rowIndex < startY + word.length;
+            }
+        });
+    };
 
-  return (
-    <Container>       
-            <CrosswordGrid1>
-                {grid.map((row, rowIndex) => (
-                    row.map((cell, cellIndex) => (
-                        <GridCell key = {`${rowIndex}-${cellIndex}`} filled = {cell !== null}>
-                            {cell}
-                        </GridCell>
-                    ))
+    const renderGrid = () => {
+        return grid.map((row, rowIndex) => (
+            <Row key={rowIndex}>
+                {row.map((cell, colIndex) => (
+                    <GridCell 
+                        key={colIndex} 
+                        filled={cell !== ''} 
+                        number={cellNumbers['${rowIndex}-${colIndex}']}
+                    >
+                        {cellNumbers['${rowIndex}-${colIndex}'] && (
+                            <CellNumber>{cellNumbers['${rowIndex}-${colIndex}']}</CellNumber>
+                        )}
+                        <CellInput
+                            value={cell}
+                            onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
+                            disabled={!isCellEditable(rowIndex, colIndex)}
+                            maxLength={1}
+                        />
+                    </GridCell>
                 ))}
-            </CrosswordGrid1>     
-    </Container>
-  )
+            </Row>
+        ));
+    };
+
+    return (
+        <Container>
+            <CluesContainer>
+                <CluesList>
+                    <h3>Across</h3>
+                    {acrossClues.map(({ number, clue }) => (
+                        <Clue key={number}>{number}. {clue}</Clue>
+                    ))}
+                </CluesList>
+                <CluesList>
+                    <h3>Down</h3>
+                    {downClues.map(({ number, clue }) => (
+                        <Clue key={number}>{number}. {clue}</Clue>
+                    ))}
+                </CluesList>
+            </CluesContainer>
+            <GridContainer>
+                {renderGrid()}
+            </GridContainer>
+        </Container>
+    );
 }
 
-export default CrosswordGrid
+export default CrosswordGrid;
+
 
 const Container = styled.div`
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     height: 100vh;
     width: 100vw;
 `;
 
-/* const CenterBox = styled.div`
-    background-color: rgba(255, 255, 255, 0.8);
-    width: 60%;
-    height: 60%;
+const CluesContainer = styled.div`
     display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+`;
+
+const CluesList = styled.div`
+    margin-bottom: 20px;
+`;
+
+const Clue = styled.div`
+    margin-bottom: 5px;
+`;
+
+const GridContainer = styled.div`
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: black;
-`; */
+`;
 
-const CrosswordGrid1 = styled.div`
-    display: grid;
-    grid-template-columns: repeat(10, 40px);
-    grid-template-rows: repeat(10, 40px);
-    gap: 1px;
-`
+const Row = styled.div`
+    display: flex;
+`;
 
 const GridCell = styled.div`
+    position: relative;
     width: 40px;
     height: 40px;
     border: 1px solid #000;
+    border-collapse: collapse;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: ${props => (props.filled ? '#fff' : '#ccc')};
+    box-sizing: border-box;
+`;
+
+const CellNumber = styled.span`
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    font-size: 12px;
+    color: #000;
+`;
+
+const CellInput = styled.input`
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
     font-size: 20px;
-    background-color: ${props => props.filled ? '#fff' : '#ccc'};
-`
+    text-transform: uppercase;
+    background-color: transparent;
+    &:disabled {
+        background-color: #eee;
+        cursor: not-allowed;
+    }
+`;
