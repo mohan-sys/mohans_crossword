@@ -13,7 +13,7 @@ function CrosswordGrid({ words, gridSize }) {
     const downClues = [];
 
     words.forEach(({ word, startX, startY, direction, clue, number }) => {
-        cellNumbers['${startY}-${startX}'] = number;
+        cellNumbers[`${startY}-${startX}`] = number;
         if (direction === 'across') {
             acrossClues.push({ number, clue, word });
         } else {
@@ -47,10 +47,10 @@ function CrosswordGrid({ words, gridSize }) {
                     <GridCell 
                         key={colIndex} 
                         filled={cell !== ''} 
-                        number={cellNumbers['${rowIndex}-${colIndex}']}
+                        number={cellNumbers[`${rowIndex}-${colIndex}`]}
                     >
-                        {cellNumbers['${rowIndex}-${colIndex}'] && (
-                            <CellNumber>{cellNumbers['${rowIndex}-${colIndex}']}</CellNumber>
+                        {cellNumbers[`${rowIndex}-${colIndex}`] && (
+                            <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
                         )}
                         <CellInput
                             value={cell}
@@ -121,13 +121,15 @@ const GridContainer = styled.div`
 
 const Row = styled.div`
     display: flex;
+    border: 0.1rem solid #000;
+    border-collapse: collapse;
 `;
 
 const GridCell = styled.div`
     position: relative;
     width: 40px;
     height: 40px;
-    border: 1px solid #000;
+    border: 0.1rem solid #000;
     border-collapse: collapse;
     display: flex;
     justify-content: center;
