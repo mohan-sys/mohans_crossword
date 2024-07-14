@@ -7,17 +7,28 @@ function CrosswordGrid({ words, gridSize }) {
         Array.from({ length: gridSize }, () => Array(gridSize).fill(''))
     );
 
+    const [highlightedCells, setHighlightedCells] = useState([]);
 
     const cellNumbers = {};
     const acrossClues = [];
     const downClues = [];
 
-    words.forEach(({ word, startX, startY, direction, clue, number }) => {
-        cellNumbers[`${startY}-${startX}`] = number;
-        if (direction === 'across') {
-            acrossClues.push({ number, clue, word });
-        } else {
-            downClues.push({ number, clue, word });
+    let nextNumber = 1;
+
+    words.forEach(({word, startX, startY, direction, clue}) => {
+        const cellKey = `${startY}-${startX}`;
+
+        if(!cellNumbers[cellKey]){
+            cellNumbers[cellKey] = nextNumber++;
+        }
+
+        const number = cellNumbers[cellKey];
+
+        if( direction === 'across'){
+            acrossClues.push({number, clue, word, startX, startY});
+        }
+        else {
+            downClues.push({number, clue, word, startX, startY});
         }
     });
 
@@ -29,6 +40,21 @@ function CrosswordGrid({ words, gridSize }) {
         newGrid[rowIndex][colIndex] = value;
         setGrid(newGrid);
     };
+
+    const handleClueClick = (direction, startX, startY, word) => {
+        const newHighlightedCells = [];
+        if (direction === 'across'){
+            for(let i=0; i< word.length; i++){
+                newHighlightedCells.push(`${startY}-${startX +i}`);
+            }
+        }
+        else {
+            for(let i=0;i< word.length; i++){
+                newHighlightedCells.push(`${startY+i}-${startX}`)
+            }
+        }
+        setHighlightedCells(newHighlightedCells);
+    }
 
     const isCellEditable = (rowIndex, colIndex) => {
         return words.some(({ word, startX, startY, direction }) => {
@@ -48,6 +74,7 @@ function CrosswordGrid({ words, gridSize }) {
                         key={colIndex} 
                         filled={cell !== ''} 
                         number={cellNumbers[`${rowIndex}-${colIndex}`]}
+                        highlighted = {highlightedCells.includes(`${rowIndex}-${colIndex}`)}
                     >
                         {cellNumbers[`${rowIndex}-${colIndex}`] && (
                             <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
@@ -69,14 +96,18 @@ function CrosswordGrid({ words, gridSize }) {
             <CluesContainer>
                 <CluesList>
                     <h3>Across</h3>
-                    {acrossClues.map(({ number, clue }) => (
-                        <Clue key={number}>{number}. {clue}</Clue>
+                    {acrossClues.map(({ number, clue, startX, startY, word }) => (
+                        <Clue key={number} onClick={() => handleClueClick('across', startX, startY, word)}>
+                            {number}. {clue}
+                        </Clue>
                     ))}
                 </CluesList>
                 <CluesList>
                     <h3>Down</h3>
-                    {downClues.map(({ number, clue }) => (
-                        <Clue key={number}>{number}. {clue}</Clue>
+                    {downClues.map(({ number, clue, startX, startY, word }) => (
+                        <Clue key={number} onClick={() => handleClueClick('down', startX, startY, word)}>
+                            {number}. {clue}
+                        </Clue>
                     ))}
                 </CluesList>
             </CluesContainer>
@@ -110,6 +141,10 @@ const CluesList = styled.div`
 
 const Clue = styled.div`
     margin-bottom: 5px;
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const GridContainer = styled.div`
@@ -129,7 +164,7 @@ const GridCell = styled.div`
     position: relative;
     width: 40px;
     height: 40px;
-    border: 0.1rem solid #000;
+    border: ${props => (props.highlighted ? '2px solid red' : '1px solid black')};
     border-collapse: collapse;
     display: flex;
     justify-content: center;
