@@ -39,6 +39,15 @@ function CrosswordGrid({ words, gridSize }) {
         const newGrid = grid.map(row => row.slice());
         newGrid[rowIndex][colIndex] = value;
         setGrid(newGrid);
+
+        const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
+        if (currentIndex !== -1 && currentIndex < highlightedCells.length -1){
+            const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex +1].split('-').map(Number);
+            const nextInput = document.querySelector(`input[data-row = "${nextRowIndex}"][data-col = "${nextColIndex}"]`);
+            if (nextInput){
+                nextInput.focus();
+            }
+        }
     };
 
     const handleClueClick = (direction, startX, startY, word) => {
@@ -84,6 +93,8 @@ function CrosswordGrid({ words, gridSize }) {
                             onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
                             disabled={!isCellEditable(rowIndex, colIndex)}
                             maxLength={1}
+                            data-row = {rowIndex}
+                            data-col = {colIndex}
                         />
                     </GridCell>
                 ))}
