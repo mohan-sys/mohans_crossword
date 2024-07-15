@@ -31,7 +31,7 @@ function CrosswordGrid({ words, gridSize }) {
             downClues.push({number, clue, word, startX, startY});
         }
     });
-
+    
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
         if (value.length > 1) return;
