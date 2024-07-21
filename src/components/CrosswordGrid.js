@@ -34,17 +34,27 @@ function CrosswordGrid({ words, gridSize }) {
     
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
-        if (value.length > 1) return;
-
+        const key = e.nativeEvent.inputType;
+        const isBackspace = key === 'deleteContentBackward';
+    
         const newGrid = grid.map(row => row.slice());
         newGrid[rowIndex][colIndex] = value;
         setGrid(newGrid);
-
+    
         const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
-        if (currentIndex !== -1 && currentIndex < highlightedCells.length -1){
-            const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex +1].split('-').map(Number);
-            const nextInput = document.querySelector(`input[data-row = "${nextRowIndex}"][data-col = "${nextColIndex}"]`);
-            if (nextInput){
+    
+        if (isBackspace && currentIndex > 0) {
+
+            const [prevRowIndex, prevColIndex] = highlightedCells[currentIndex - 1].split('-').map(Number);
+            const prevInput = document.querySelector(`input[data-row="${prevRowIndex}"][data-col="${prevColIndex}"]`);
+            if (prevInput) {
+                prevInput.focus();
+            }
+        } else if (!isBackspace && currentIndex !== -1 && currentIndex < highlightedCells.length - 1) {
+          
+            const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
+            const nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
+            if (nextInput) {
                 nextInput.focus();
             }
         }
