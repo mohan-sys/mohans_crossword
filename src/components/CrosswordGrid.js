@@ -9,6 +9,8 @@ function CrosswordGrid({ words, gridSize }) {
 
     const [highlightedCells, setHighlightedCells] = useState([]);
 
+    const [validatedCells, setValidatedCells] = useState({});
+
     const cellNumbers = {};
     const acrossClues = [];
     const downClues = [];
@@ -31,6 +33,37 @@ function CrosswordGrid({ words, gridSize }) {
             downClues.push({number, clue, word, startX, startY});
         }
     });
+
+    const validateWord = (direction, startX, startY, word) => {
+        let isValid = true;
+        if(direction === 'across'){
+            for (let i=0; i< word.length; i++){
+                isValid = false;
+                break;
+            }
+        }
+        else {
+            for (let i=0; i< word.length; i++){
+                if(grid[startY +i][startX] !== word[i]){
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+
+        const newValidateCells = { ...validatedCells};
+        if (direction === 'across'){
+            for(let i=0; i< word.length; i++){
+                newValidateCells[`${startY}-${startX + i}`] = isValid;
+            }
+        }
+        else {
+            for (let i =0; i< word.length; i++){
+                newValidateCells[`${startY + i}-${startX}`] = isValid;
+            }
+        }
+        setValidatedCells(newValidateCells);
+    };
     
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
@@ -58,6 +91,12 @@ function CrosswordGrid({ words, gridSize }) {
                 nextInput.focus();
             }
         }
+
+        const clue = highlightedCells[0].split('-').map(Number);
+        const [startY, startX] = clue;
+        const direction = highlightedCells.length > 1 && highlightedCells[1] > startX ? 'across' : 'down';
+        const word = direction === 'across' ? grid[startY].slice(startX, startX + highlightedCells.length).join('') : grid.slice(startY, startY + highlightedCells.length).map(row => row[startX]).join('');
+        validateWord(direction, startX, startY, word);
     };
 
     const handleClueClick = (direction, startX, startY, word) => {
@@ -89,24 +128,26 @@ function CrosswordGrid({ words, gridSize }) {
         return grid.map((row, rowIndex) => (
             <Row key={rowIndex}>
                 {row.map((cell, colIndex) => (
-                    <GridCell 
-                        key={colIndex} 
-                        filled={cell !== ''} 
-                        number={cellNumbers[`${rowIndex}-${colIndex}`]}
-                        highlighted = {highlightedCells.includes(`${rowIndex}-${colIndex}`)}
+                    <GridCell
+                    key={colIndex}
+                    filled={cell !== ''}
+                    number={cellNumbers[`${rowIndex}-${colIndex}`]}
+                    highlighted={highlightedCells.includes(`${rowIndex}-${colIndex}`)}
+                    correct={validatedCells[`${rowIndex}-${colIndex}`] === true}
+                    incorrect={validatedCells[`${rowIndex}-${colIndex}`] === false}
                     >
-                        {cellNumbers[`${rowIndex}-${colIndex}`] && (
-                            <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
-                        )}
-                        <CellInput
-                            value={cell}
-                            onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
-                            disabled={!isCellEditable(rowIndex, colIndex)}
-                            maxLength={1}
-                            data-row = {rowIndex}
-                            data-col = {colIndex}
-                        />
-                    </GridCell>
+                    {cellNumbers[`${rowIndex}-${colIndex}`] && (
+                        <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
+                    )}
+                    <CellInput
+                        value={cell}
+                        onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
+                        disabled={!isCellEditable(rowIndex, colIndex)}
+                        maxLength={1}
+                        data-row={rowIndex}
+                        data-col={colIndex}
+                    />
+                </GridCell>
                 ))}
             </Row>
         ));
@@ -192,6 +233,7 @@ const GridCell = styled.div`
     align-items: center;
     background-color: ${props => (props.filled ? '#fff' : '#ccc')};
     box-sizing: border-box;
+    background-color: ${props => (props.correct ? '#a8e6cf' : props.incorrect ? '#ff8b94' : props.filled ? '#fff' : '#ccc')};
 `;
 
 const CellNumber = styled.span`
