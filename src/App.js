@@ -7,44 +7,56 @@ import MainContent from './components/MainContent';
 
 function App() {
 
-  const crossword = {
-    across: {
-        1: {
-            question: "The study of life and living organisms",
-            answer: "Biology"
+    const crossword = {
+        across: {
+            1: {
+                question: "The substance that forms clouds",
+                answer: "WATER"
+            },
+            5: {
+                question: "The hot stuff inside a volcano",
+                answer: "LAVA"
+            },
+            6: {
+                question: "The yellow part of an egg",
+                answer: "YOLK"
+            },
+            7: {
+                question: "Opposite of cold",
+                answer: "WARM"
+            },
+            8: {
+                question: "The planet we live on",
+                answer: "EARTH"
+            }
         },
-        3: {
-            question: "The force that attracts a body toward the center of the earth",
-            answer: "Gravity"
-        },
-        5: {
-            question: "The smallest particle of a chemical element that retains its chemical properties",
-            answer: "Atom"
-        },
-        6: {
-            question: "A large body of matter in space that orbits a star and does not produce light of its own",
-            answer: "Planet"
+        down: {
+            1: {
+                question: "Large body of saltwater",
+                answer: "OCEAN"
+            },
+            2: {
+                question: "Shiny red fruit",
+                answer: "APPLE"
+            },
+            3: {
+                question: "The gas we breathe",
+                answer: "OXYGEN"
+            },
+            4: {
+                question: "The force that pulls us down",
+                answer: "GRAVITY"
+            },
+            5: {
+                question: "To look at something closely",
+                answer: "SEE"
+            },
+            6: {
+                question: "The liquid part of blood",
+                answer: "PLASMA"
+            }
         }
-    },
-    down: {
-        1: {
-            question: "A polygon with four equal sides and angles",
-            answer: "Square"
-        },
-        2: {
-            question: "The powerhouse of the cell",
-            answer: "Mitochondria"
-        },
-        4: {
-            question: "The process by which plants use sunlight to synthesize foods with the aid of chlorophyll",
-            answer: "Photosynthesis"
-        },
-        5: {
-            question: "The basic unit of a chemical element",
-            answer: "Element"
-        }
-    }
-};
+    };
 
   return (
     <div className="App">
