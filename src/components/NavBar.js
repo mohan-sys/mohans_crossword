@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function NavBar() {
   return (
     <Component>
         <nav>
             <NavList>
-                <NavItem>Home</NavItem>
-                <NavItem>New Game</NavItem>
-                <NavItem>Load Game</NavItem>
-                <NavItem>Multiplayer</NavItem>               
+                <NavItem><Link to="/">Home</Link></NavItem>
+                <NavItem><Link to="/">New Game</Link></NavItem>
+                <NavItem><Link to="/">Load Game</Link></NavItem>
+                <NavItem><Link to="/multiplayer">Multiplayer</Link></NavItem>             
             </NavList>
         </nav>
     </Component>
@@ -35,9 +36,18 @@ const NavList = styled.ul`
     gap: 1rem;
 `
 
-const NavItem = styled.li`
+const NavItem = styled(Link)`
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none; 
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     &:hover {
-        text-decoratiom: underline;
+        cursor: pointer;
+        text-decoration: none; 
     }
-`
+`;
