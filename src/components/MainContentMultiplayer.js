@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CrosswordGridMulti from './CrosswordGridMulti';
 
-function MainContent() {
+function MainContentMultiplayer() {
 
   const words = [
     { word: 'WATER', startX: 0, startY: 0, direction: 'across', clue: 'The substance that forms clouds' },
@@ -26,4 +26,4 @@ function MainContent() {
 
 
 
-export default MainContent
+export default MainContentMultiplayer;

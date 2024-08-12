@@ -270,7 +270,7 @@ const CellNumber = styled.span`
     position: absolute;
     top: 2px;
     left: 2px;
-    font-size: 12px;
+    font-size: 13px;
     color: #000;
 `;
 
