@@ -2,10 +2,27 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
+const cors = require('cors');
 
 const app = express();
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true,
+    optionSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+    cors:{
+        origin: "http://localhost:3000",
+        methods: ["GET", "Post"],
+        credentials: true
+    }
+});
+    
 
 let gameState = {};
 

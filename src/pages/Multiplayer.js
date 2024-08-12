@@ -6,15 +6,20 @@ import MainContentMultiplayer from '../components/MainContentMultiplayer';
 import RoomSelection from '../components/RoomSelection';  // Import RoomSelection component
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3001',{
+    withCredentials: true
+});
 
 const Multiplayer = () => {
   const [gameId, setGameId] = useState(null);
   const [generatedGameId, setGeneratedGameId] = useState('');  // State to hold the generated game ID
 
   const handleCreateRoom = () => {
+    console.log('create room buttom clicked');
     socket.emit('createGame');
+
     socket.on('gameCreated', (newGameId) => {
+        console.log('Game Id: ', newGameId);
       setGameId(newGameId);
       setGeneratedGameId(newGameId);  // Store the generated game ID for displaying
     });
@@ -38,6 +43,7 @@ const Multiplayer = () => {
     <div>
       <Header />
       <NavBar />
+      
       <MainContentMultiplayer gameId={gameId} socket={socket} />
       <Footer />
     </div>
