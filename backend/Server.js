@@ -12,27 +12,35 @@ let gameState = {};
 io.on('connection', (socket) => {
     console.log('A user connected', socket.id);
 
-    const userId = uuidv4();
-    socket.emit('userId', userId);
+    socket.on('createGame', () => {
+        const gameId = uuidv4();  // Generate a unique game ID
+        socket.join(gameId);
+        gameState[gameId] = { grid: Array(10).fill().map(() => Array(10).fill('')), users: [] };
+        gameState[gameId].users.push(socket.id);
+        socket.emit('gameCreated', gameId);  // Send the gameId to the user who created the game
+    });
 
     socket.on('joinGame', (gameId) => {
-        socket.join(gameId);
-        if (!gameState[gameId]) {
-            gameState[gameId] = { grid: Array(10).fill().map(() => Array(10).fill('')), users: [] };
+        if (gameState[gameId]) {
+            socket.join(gameId);
+            gameState[gameId].users.push(socket.id);
+            socket.emit('gameState', gameState[gameId]);
+        } else {
+            socket.emit('error', 'Game not found');
         }
-        gameState[gameId].users.push(userId);
-        socket.emit('gameState', gameState[gameId]);
     });
 
     socket.on('inputChange', ({ gameId, rowIndex, colIndex, value }) => {
-        gameState[gameId].grid[rowIndex][colIndex] = value;
-        io.to(gameId).emit('updateGrid', { rowIndex, colIndex, value });
+        if (gameState[gameId]) {
+            gameState[gameId].grid[rowIndex][colIndex] = value;
+            io.to(gameId).emit('updateGrid', { rowIndex, colIndex, value });
+        }
     });
 
     socket.on('disconnect', () => {
         console.log('User disconnected', socket.id);
         for (const gameId in gameState) {
-            gameState[gameId].users = gameState[gameId].users.filter(user => user !== userId);
+            gameState[gameId].users = gameState[gameId].users.filter(user => user !== socket.id);
         }
     });
 });

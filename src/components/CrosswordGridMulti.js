@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
-
-function CrosswordGrid({ words, gridSize }) {
+function CrosswordGridMulti({ words, gridSize, gameId, socket }) { // Now using gameId and socket from props
     const [grid, setGrid] = useState(
         Array.from({ length: gridSize }, () => Array(gridSize).fill(''))
     );
     const [highlightedCells, setHighlightedCells] = useState([]);
     const [validatedCells, setValidatedCells] = useState({});
     const [userId, setUserId] = useState(null);
-    const [gameId] = useState('defaultGame'); 
 
     useEffect(() => {
-        
+        // Receive the user's unique ID
         socket.on('userId', (id) => {
             setUserId(id);
         });
 
-        
+        // Join the game room
         socket.emit('joinGame', gameId);
 
+        // Receive the initial game state from the server
         socket.on('gameState', (state) => {
             if (state.grid.length > 0) {
                 setGrid(state.grid);
             }
         });
 
-        
+        // Listen for updates to the grid from other players
         socket.on('updateGrid', ({ rowIndex, colIndex, value }) => {
             setGrid(prevGrid => {
                 const newGrid = prevGrid.map(row => row.slice());
@@ -37,10 +34,11 @@ function CrosswordGrid({ words, gridSize }) {
             });
         });
 
+        // Clean up the socket connection on component unmount
         return () => {
             socket.disconnect();
         };
-    }, [gameId]);
+    }, [gameId, socket]);
 
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
@@ -56,14 +54,12 @@ function CrosswordGrid({ words, gridSize }) {
         const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
 
         if (isBackspace && currentIndex > 0) {
-
             const [prevRowIndex, prevColIndex] = highlightedCells[currentIndex - 1].split('-').map(Number);
             const prevInput = document.querySelector(`input[data-row="${prevRowIndex}"][data-col="${prevColIndex}"]`);
             if (prevInput) {
                 prevInput.focus();
             }
         } else if (!isBackspace && currentIndex !== -1 && currentIndex < highlightedCells.length - 1) {
-          
             const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
             const nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
             if (nextInput) {
@@ -210,7 +206,7 @@ function CrosswordGrid({ words, gridSize }) {
     );
 }
 
-export default CrosswordGrid;
+export default CrosswordGridMulti;
 
 
 const Container = styled.div`
@@ -261,7 +257,6 @@ const GridCell = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${props => (props.filled ? '#fff' : '#ccc')};
     box-sizing: border-box;
     background-color: ${props => (props.correct ? '#a8e6cf' : props.incorrect ? '#ff8b94' : props.filled ? '#fff' : '#ccc')};
 `;

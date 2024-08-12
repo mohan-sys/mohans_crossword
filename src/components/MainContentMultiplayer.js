@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import CrosswordGridMulti from './CrosswordGridMulti';
 
-function MainContentMultiplayer() {
+function MainContentMultiplayer({gameId, socket}) {
 
   const words = [
     { word: 'WATER', startX: 0, startY: 0, direction: 'across', clue: 'The substance that forms clouds' },
@@ -19,7 +18,7 @@ function MainContentMultiplayer() {
 ];
     
   return (
-        < CrosswordGridMulti words = {words} gridSize = {10}/>
+        < CrosswordGridMulti words = {words} gridSize = {10} gameId = {gameId} socket = {socket} />
   )
 }
 
