@@ -101,18 +101,17 @@ function CrosswordGrid({ words, gridSize }) {
 
     const handleClueClick = (direction, startX, startY, word) => {
         const newHighlightedCells = [];
-        if (direction === 'across'){
-            for(let i=0; i< word.length; i++){
-                newHighlightedCells.push(`${startY}-${startX +i}`);
+        if (direction === 'across') {
+            for (let i = 0; i < word.length; i++) {
+                newHighlightedCells.push(`${startY}-${startX + i}`);
             }
-        }
-        else {
-            for(let i=0;i< word.length; i++){
-                newHighlightedCells.push(`${startY+i}-${startX}`)
+        } else {
+            for (let i = 0; i < word.length; i++) {
+                newHighlightedCells.push(`${startY + i}-${startX}`);
             }
         }
         setHighlightedCells(newHighlightedCells);
-    }
+    };
 
     const isCellEditable = (rowIndex, colIndex) => {
         return words.some(({ word, startX, startY, direction }) => {
@@ -129,25 +128,25 @@ function CrosswordGrid({ words, gridSize }) {
             <Row key={rowIndex}>
                 {row.map((cell, colIndex) => (
                     <GridCell
-                    key={colIndex}
-                    filled={cell !== ''}
-                    number={cellNumbers[`${rowIndex}-${colIndex}`]}
-                    highlighted={highlightedCells.includes(`${rowIndex}-${colIndex}`)}
-                    correct={validatedCells[`${rowIndex}-${colIndex}`] === true}
-                    incorrect={validatedCells[`${rowIndex}-${colIndex}`] === false}
-                    >
-                    {cellNumbers[`${rowIndex}-${colIndex}`] && (
-                        <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
-                    )}
-                    <CellInput
-                        value={cell}
-                        onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
-                        disabled={!isCellEditable(rowIndex, colIndex)}
-                        maxLength={1}
-                        data-row={rowIndex}
-                        data-col={colIndex}
-                    />
-                </GridCell>
+                        key={colIndex}
+                        $filled={cell !== ''}
+                        $number={cellNumbers[`${rowIndex}-${colIndex}`]}
+                        $highlighted={highlightedCells.includes(`${rowIndex}-${colIndex}`)}
+                        $correct={validatedCells[`${rowIndex}-${colIndex}`] === true}
+                        $incorrect={validatedCells[`${rowIndex}-${colIndex}`] === false}
+                        >
+                        {cellNumbers[`${rowIndex}-${colIndex}`] && (
+                            <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
+                        )}
+                        <CellInput
+                            value={cell}
+                            onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
+                            disabled={!isCellEditable(rowIndex, colIndex)}
+                            maxLength={1}
+                            data-row={rowIndex}
+                            data-col={colIndex}
+                        />
+                    </GridCell>
                 ))}
             </Row>
         ));
@@ -226,14 +225,13 @@ const GridCell = styled.div`
     position: relative;
     width: 40px;
     height: 40px;
-    border: ${props => (props.highlighted ? '2px solid red' : '1px solid black')};
+    border: ${props => (props.$highlighted ? '2px solid red' : '1px solid black')};
     border-collapse: collapse;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${props => (props.filled ? '#fff' : '#ccc')};
     box-sizing: border-box;
-    background-color: ${props => (props.correct ? '#a8e6cf' : props.incorrect ? '#ff8b94' : props.filled ? '#fff' : '#ccc')};
+    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? '#fff' : '#ccc')};
 `;
 
 const CellNumber = styled.span`
