@@ -43,7 +43,8 @@ const Multiplayer = () => {
     <div>
       <Header />
       <NavBar />
-      
+      <p>Your game Id is: {gameId}</p> 
+      <p>Please Copy this game Id and share it with your friend</p>
       <MainContentMultiplayer gameId={gameId} socket={socket} />
       <Footer />
     </div>

@@ -18,6 +18,7 @@ function MainContentMultiplayer({gameId, socket}) {
 ];
     
   return (
+        
         < CrosswordGridMulti words = {words} gridSize = {10} gameId = {gameId} socket = {socket} />
   )
 }
@@ -26,3 +27,4 @@ function MainContentMultiplayer({gameId, socket}) {
 
 
 export default MainContentMultiplayer;
+

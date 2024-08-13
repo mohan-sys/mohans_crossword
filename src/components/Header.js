@@ -4,7 +4,7 @@ import styled from 'styled-components';
 function Header() {
   return (
     <Component>
-        <Title> Mohan's Crossword</Title>
+        <Title> velario's Crossword</Title>
     </Component>
   )
 }

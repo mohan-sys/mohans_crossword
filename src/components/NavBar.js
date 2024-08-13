@@ -7,17 +7,17 @@ function NavBar() {
     <Component>
         <nav>
             <NavList>
-                <NavItem><Link to="/">Home</Link></NavItem>
-                <NavItem><Link to="/">New Game</Link></NavItem>
-                <NavItem><Link to="/">Load Game</Link></NavItem>
-                <NavItem><Link to="/multiplayer">Multiplayer</Link></NavItem>             
+                <NavItem><StyledLink to="/">Home</StyledLink></NavItem>
+                <NavItem><StyledLink to="/">New Game</StyledLink></NavItem>
+                <NavItem><StyledLink to="/">Load Game</StyledLink></NavItem>
+                <NavItem><StyledLink to="/multiplayer">Multiplayer</StyledLink></NavItem>             
             </NavList>
         </nav>
     </Component>
   )
 }
 
-export default NavBar
+export default NavBar;
 
 const Component = styled.div`
     display: flex;
@@ -26,7 +26,7 @@ const Component = styled.div`
     font-size: 1.5rem;
     justify-content: center;
     align-items: center;
-`
+`;
 
 const NavList = styled.ul`
     list-style: none;
@@ -34,10 +34,16 @@ const NavList = styled.ul`
     display: flex;
     margin: 0;
     gap: 1rem;
-`
+`;
 
-const NavItem = styled(Link)`
-    color: white;
+const NavItem = styled.li`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const StyledLink = styled(Link)`
+    color: black;
     padding: 0.5rem 1rem;
     border-radius: 5px;
     text-decoration: none; 
@@ -47,7 +53,6 @@ const NavItem = styled(Link)`
     justify-content: center;
 
     &:hover {
-        cursor: pointer;
-        text-decoration: none; 
+        text-decoration: underline;
     }
 `;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function CrosswordGridMulti({ words, gridSize, gameId, socket }) { // Now using gameId and socket from props
+function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
     const [grid, setGrid] = useState(
         Array.from({ length: gridSize }, () => Array(gridSize).fill(''))
     );
@@ -10,11 +10,6 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) { // Now using 
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        // Receive the user's unique ID
-        socket.on('userId', (id) => {
-            setUserId(id);
-        });
-
         // Join the game room
         socket.emit('joinGame', gameId);
 
@@ -36,13 +31,16 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) { // Now using 
 
         // Clean up the socket connection on component unmount
         return () => {
+            socket.off('gameState');
+            socket.off('updateGrid');
             socket.disconnect();
         };
     }, [gameId, socket]);
 
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
-        socket.emit('inputChange', { gameId, rowIndex, colIndex, value });
+        console.log(`Emitting change for cell (${rowIndex}, ${colIndex}): ${value}`);  // Debug log
+        socket.emit('inputChange', { gameId, rowIndex, colIndex, value });  // Emit the change to the server
 
         const key = e.nativeEvent.inputType;
         const isBackspace = key === 'deleteContentBackward';
@@ -207,7 +205,6 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) { // Now using 
 }
 
 export default CrosswordGridMulti;
-
 
 const Container = styled.div`
     display: flex;
