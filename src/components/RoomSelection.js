@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-function RoomSelection({ onCreate, onJoin, generatedGameId }) {  // Accept the generatedGameId as a prop
+function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const [gameId, setGameId] = useState('');
 
   const handleCreate = () => {

@@ -39,11 +39,7 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
 
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
-        console.log(`Emitting change for cell (${rowIndex}, ${colIndex}): ${value}`);  // Debug log
         socket.emit('inputChange', { gameId, rowIndex, colIndex, value });  // Emit the change to the server
-
-        const key = e.nativeEvent.inputType;
-        const isBackspace = key === 'deleteContentBackward';
 
         const newGrid = grid.map(row => row.slice());
         newGrid[rowIndex][colIndex] = value;
@@ -51,69 +47,102 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
 
         const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
 
-        if (isBackspace && currentIndex > 0) {
-            const [prevRowIndex, prevColIndex] = highlightedCells[currentIndex - 1].split('-').map(Number);
-            const prevInput = document.querySelector(`input[data-row="${prevRowIndex}"][data-col="${prevColIndex}"]`);
-            if (prevInput) {
-                prevInput.focus();
-            }
-        } else if (!isBackspace && currentIndex !== -1 && currentIndex < highlightedCells.length - 1) {
+        // Move to the next cell in the highlighted word
+        if (currentIndex !== -1 && currentIndex < highlightedCells.length - 1) {
             const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
             const nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
             if (nextInput) {
                 nextInput.focus();
             }
         }
+    };
 
-        const clue = highlightedCells[0].split('-').map(Number);
-        const [startY, startX] = clue;
-        const direction = highlightedCells.length > 1 && highlightedCells[1] > startX ? 'across' : 'down';
-        const word = direction === 'across' ? grid[startY].slice(startX, startX + highlightedCells.length).join('') : grid.slice(startY, startY + highlightedCells.length).map(row => row[startX]).join('');
-        validateWord(direction, startX, startY, word);
+    const handleKeyDown = (e, rowIndex, colIndex) => {
+        const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
+        let nextInput;
+
+        if (e.key === 'ArrowRight' && currentIndex < highlightedCells.length - 1) {
+            const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
+            nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
+        } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            const [prevRowIndex, prevColIndex] = highlightedCells[currentIndex - 1].split('-').map(Number);
+            nextInput = document.querySelector(`input[data-row="${prevRowIndex}"][data-col="${prevColIndex}"]`);
+        } else if (e.key === 'ArrowDown' && currentIndex < highlightedCells.length - 1) {
+            const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
+            nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
+        } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+            const [prevRowIndex, prevColIndex] = highlightedCells[currentIndex - 1].split('-').map(Number);
+            nextInput = document.querySelector(`input[data-row="${prevRowIndex}"][data-col="${prevColIndex}"]`);
+        }
+
+        if (nextInput) {
+            nextInput.focus();
+            const value = nextInput.value;
+            nextInput.setSelectionRange(value.length, value.length); // Place the cursor at the end of the text
+            e.preventDefault(); // Prevent default cursor movement
+        }
     };
 
     const handleClueClick = (direction, startX, startY, word) => {
         const newHighlightedCells = [];
+        let firstCell = null;
+
         if (direction === 'across') {
             for (let i = 0; i < word.length; i++) {
-                newHighlightedCells.push(`${startY}-${startX + i}`);
+                const cellId = `${startY}-${startX + i}`;
+                newHighlightedCells.push(cellId);
+                if (i === 0) firstCell = cellId;
             }
         } else {
             for (let i = 0; i < word.length; i++) {
-                newHighlightedCells.push(`${startY + i}-${startX}`);
+                const cellId = `${startY + i}-${startX}`;
+                newHighlightedCells.push(cellId);
+                if (i === 0) firstCell = cellId;
             }
         }
         setHighlightedCells(newHighlightedCells);
+
+        // Automatically focus the first cell of the word
+        if (firstCell) {
+            const [firstRowIndex, firstColIndex] = firstCell.split('-').map(Number);
+            const firstInput = document.querySelector(`input[data-row="${firstRowIndex}"][data-col="${firstColIndex}"]`);
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }
     };
 
-    const validateWord = (direction, startX, startY, word) => {
-        let isValid = true;
-        if (direction === 'across') {
-            for (let i = 0; i < word.length; i++) {
-                if (grid[startY][startX + i] !== word[i]) {
-                    isValid = false;
-                    break;
-                }
-            }
-        } else {
-            for (let i = 0; i < word.length; i++) {
-                if (grid[startY + i][startX] !== word[i]) {
-                    isValid = false;
-                    break;
-                }
-            }
-        }
-
+    const validateAllWords = () => {
         const newValidatedCells = { ...validatedCells };
-        if (direction === 'across') {
-            for (let i = 0; i < word.length; i++) {
-                newValidatedCells[`${startY}-${startX + i}`] = isValid;
+
+        words.forEach(({ word, startX, startY, direction }) => {
+            let isValid = true;
+
+            if (direction === 'across') {
+                for (let i = 0; i < word.length; i++) {
+                    const expectedChar = word[i];
+                    const userInputChar = grid[startY][startX + i];
+
+                    if (userInputChar !== expectedChar) {
+                        isValid = false;
+                    }
+
+                    newValidatedCells[`${startY}-${startX + i}`] = isValid;
+                }
+            } else if (direction === 'down') {
+                for (let i = 0; i < word.length; i++) {
+                    const expectedChar = word[i];
+                    const userInputChar = grid[startY + i][startX];
+
+                    if (userInputChar !== expectedChar) {
+                        isValid = false;
+                    }
+
+                    newValidatedCells[`${startY + i}-${startX}`] = isValid;
+                }
             }
-        } else {
-            for (let i = 0; i < word.length; i++) {
-                newValidatedCells[`${startY + i}-${startX}`] = isValid;
-            }
-        }
+        });
+
         setValidatedCells(newValidatedCells);
     };
 
@@ -133,11 +162,10 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
                 {row.map((cell, colIndex) => (
                     <GridCell
                         key={colIndex}
-                        filled={cell !== ''}
-                        number={cellNumbers[`${rowIndex}-${colIndex}`]}
-                        highlighted={highlightedCells.includes(`${rowIndex}-${colIndex}`)}
-                        correct={validatedCells[`${rowIndex}-${colIndex}`] === true}
-                        incorrect={validatedCells[`${rowIndex}-${colIndex}`] === false}
+                        $filled={cell !== ''}
+                        $highlighted={highlightedCells.includes(`${rowIndex}-${colIndex}`)}
+                        $correct={validatedCells[`${rowIndex}-${colIndex}`] === true}
+                        $incorrect={validatedCells[`${rowIndex}-${colIndex}`] === false}
                     >
                         {cellNumbers[`${rowIndex}-${colIndex}`] && (
                             <CellNumber>{cellNumbers[`${rowIndex}-${colIndex}`]}</CellNumber>
@@ -145,6 +173,7 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
                         <CellInput
                             value={cell}
                             onChange={(e) => handleInputChange(e, rowIndex, colIndex)}
+                            onKeyDown={(e) => handleKeyDown(e, rowIndex, colIndex)}
                             disabled={!isCellEditable(rowIndex, colIndex)}
                             maxLength={1}
                             data-row={rowIndex}
@@ -199,6 +228,7 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
             </CluesContainer>
             <GridContainer>
                 {renderGrid()}
+                <CheckButton onClick={validateAllWords}>Check Puzzle</CheckButton>
             </GridContainer>
         </Container>
     );
@@ -249,13 +279,13 @@ const GridCell = styled.div`
     position: relative;
     width: 40px;
     height: 40px;
-    border: ${props => (props.highlighted ? '2px solid red' : '1px solid black')};
+    border: ${props => (props.$highlighted ? '2px solid red' : '1px solid black')};
     border-collapse: collapse;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background-color: ${props => (props.correct ? '#a8e6cf' : props.incorrect ? '#ff8b94' : props.filled ? '#fff' : '#ccc')};
+    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? '#fff' : '#ccc')};
 `;
 
 const CellNumber = styled.span`
@@ -277,5 +307,19 @@ const CellInput = styled.input`
     &:disabled {
         background-color: #eee;
         cursor: not-allowed;
+    }
+`;
+
+const CheckButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    &:hover {
+        background-color: #0056b3;
     }
 `;

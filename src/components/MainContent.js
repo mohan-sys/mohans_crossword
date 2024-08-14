@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import CrosswordGrid from './CrosswordGrid';
 
 function MainContent() {
@@ -16,7 +15,7 @@ function MainContent() {
     { word: 'TREE', startX: 8, startY: 0, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' }, 
     { word: 'RAIN', startX: 9, startY: 1, direction: 'down', clue: 'Water that falls from clouds in droplets' }, 
     { word: 'WIND', startX: 7, startY: 2, direction: 'down', clue: 'The perceptible natural movement of the air' } 
-];
+  ];
     
   return (
         < CrosswordGrid words = {words} gridSize = {10}/>
@@ -28,11 +27,3 @@ function MainContent() {
 
 export default MainContent
 
-const Container = styled.div`
-    width = 100vw;
-    height = 100vh;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    padding-bottom: 29px;
-`
