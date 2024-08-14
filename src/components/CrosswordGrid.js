@@ -101,16 +101,30 @@ function CrosswordGrid({ words, gridSize }) {
 
     const handleClueClick = (direction, startX, startY, word) => {
         const newHighlightedCells = [];
+        let firstCell = null;
+
         if (direction === 'across') {
             for (let i = 0; i < word.length; i++) {
+                const cellId = `${startY}-${startX + i}`;
                 newHighlightedCells.push(`${startY}-${startX + i}`);
+                if( i === 0) firstCell = cellId;
             }
         } else {
             for (let i = 0; i < word.length; i++) {
+                const cellId = `${startY + i}-${startX}`;
                 newHighlightedCells.push(`${startY + i}-${startX}`);
+                if (i === 0) firstCell = cellId;
             }
         }
         setHighlightedCells(newHighlightedCells);
+
+        if (firstCell) {
+            const [firstRowIndex, firstColIndex] = firstCell.split('-').map(Number);
+            const firstInput = document.querySelector(`input[data-row="${firstRowIndex}"][data-col="${firstColIndex}"]`);
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }
     };
 
     const isCellEditable = (rowIndex, colIndex) => {
