@@ -5,17 +5,17 @@ import CrosswordGrid from './CrosswordGrid';
 function MainContent() {
 
   const words = [
-    { word: 'WATER', startX: 0, startY: 0, direction: 'across', clue: 'The substance that forms clouds' },
-    { word: 'LAVA', startX: 1, startY: 2, direction: 'across', clue: 'The hot stuff inside a volcano' },
-    { word: 'YOLK', startX: 3, startY: 4, direction: 'across', clue: 'The yellow part of an egg' },
-    { word: 'WARM', startX: 6, startY: 6, direction: 'across', clue: 'Opposite of cold' },
-    { word: 'EARTH', startX: 2, startY: 8, direction: 'across', clue: 'The planet we live on' },
-    { word: 'WHALE', startX: 0, startY: 0, direction: 'down', clue: 'The largest mammal' },
-    { word: 'APPLE', startX: 2, startY: 1, direction: 'down', clue: 'Shiny red fruit' },
-    { word: 'PLASMA', startX: 4, startY: 2, direction: 'down', clue: 'The liquid part of blood' },
-    { word: 'ROCK', startX: 3, startY: 4, direction: 'down', clue: 'A hard, natural substance' },
-    { word: 'GRAVITY', startX: 6, startY: 4, direction: 'down', clue: 'The force that pulls us down' },
-    { word: 'OXYGEN', startX: 8, startY: 3, direction: 'down', clue: 'The gas we breathe' }
+    // Across Words
+    { word: 'WAVE', startX: 0, startY: 0, direction: 'across', clue: 'A disturbance that travels through space and matter' }, 
+    { word: 'FIRE', startX: 0, startY: 2, direction: 'across', clue: 'A rapid oxidation process, releasing heat' }, 
+    { word: 'EGG', startX: 0, startY: 4, direction: 'across', clue: 'An oval or round object laid by birds' }, 
+    { word: 'MOON', startX: 0, startY: 6, direction: 'across', clue: 'A natural satellite of the Earth' }, 
+
+    // Down Words (Placed to the right to avoid intersections)
+    { word: 'BEAR', startX: 6, startY: 0, direction: 'down', clue: 'A large, heavy mammal with thick fur' }, 
+    { word: 'TREE', startX: 8, startY: 0, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' }, 
+    { word: 'RAIN', startX: 9, startY: 1, direction: 'down', clue: 'Water that falls from clouds in droplets' }, 
+    { word: 'WIND', startX: 7, startY: 2, direction: 'down', clue: 'The perceptible natural movement of the air' } 
 ];
     
   return (
