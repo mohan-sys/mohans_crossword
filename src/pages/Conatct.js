@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import NavBar from '../components/NavBar';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function ContactUs() {
   return (
     <ContactContainer>
+        <Header />
+        <NavBar />
       <h2>Contact Us</h2>
       <ContactList>
         <ContactItem>
@@ -15,6 +20,7 @@ function ContactUs() {
           <p>Email: robert.atkey@strath.ac.uk</p>
         </ContactItem>
       </ContactList>
+      <Footer />
     </ContactContainer>
   );
 }
@@ -25,7 +31,7 @@ const ContactContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   height: 100vh;
   text-align: center;
   padding: 20px;

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Multiplayer from './pages/Multiplayer';
 import Feedback from './pages/Feedback';
 import ContactUs from './pages/Conatct';
+import AboutDev from './pages/AboutDev';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/multiplayer" element={<Multiplayer />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/about-dev" element = {<AboutDev />} />
       </Routes>
     </Router>
   );
