@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function Footer() {
+    const navigate = useNavigate();
   return (
     <FooterContainer>
         <NavButton onClick = { ()=> window.location.href = '#'}>About Dev</NavButton>
-        <NavButton onClick = { ()=> window.location.href = '#'}>Contact Us</NavButton>
-        <NavButton onClick = { ()=> window.location.href = '#'}>Leave a Feedback</NavButton>
+        <NavButton onClick = { ()=> navigate('/contact-us')}>Contact Us</NavButton>
+        <NavButton onClick = { ()=> navigate('/feedback')}>Leave a Feedback</NavButton>
         <NavButton onClick = { ()=> window.location.href = '#'}>Privacy Policy</NavButton>
         <Copyrights>© 2024 Mohan's Crossword</Copyrights>
     </FooterContainer>

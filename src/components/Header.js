@@ -5,7 +5,6 @@ function Header() {
   return (
     <Component>
         <Title> Mohan's Crossword</Title>
-        <p>hello world</p>
     </Component>
   )
 }
