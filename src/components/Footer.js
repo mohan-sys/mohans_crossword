@@ -6,7 +6,7 @@ function Footer() {
     const navigate = useNavigate();
   return (
     <FooterContainer>
-        <NavButton onClick = { ()=> navigate('about-dev')}>About Dev</NavButton>
+        <NavButton onClick = { ()=> navigate('/about-dev')}>About Dev</NavButton>
         <NavButton onClick = { ()=> navigate('/contact-us')}>Contact Us</NavButton>
         <NavButton onClick = { ()=> navigate('/feedback')}>Leave a Feedback</NavButton>
         <NavButton onClick = { ()=> window.location.href = '#'}>Privacy Policy</NavButton>

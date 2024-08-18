@@ -34,7 +34,6 @@ const ContactContainer = styled.div`
   justify-content: flex-start;
   height: 100vh;
   text-align: center;
-  padding: 20px;
 `;
 
 const ContactList = styled.div`

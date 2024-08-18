@@ -28,7 +28,6 @@ const FeedbackContainer = styled.div`
   justify-content: flex-start;
   height: 100vh;
   text-align: center;
-  padding: 20px;
 `;
 
 const FeedbackLink = styled.a`

@@ -38,8 +38,6 @@ const AboutContainer = styled.div`
   justify-content: flex-start;
   height: 100vh;
   text-align: center;
-  padding: 20px;
-  padding-top: 60px;
 `;
 
 const DeveloperInfo = styled.div`
