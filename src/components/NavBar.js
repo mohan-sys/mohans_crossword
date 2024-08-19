@@ -8,7 +8,8 @@ function NavBar() {
         <nav>
             <NavList>
                 <NavItem><StyledLink to="/">Home</StyledLink></NavItem>
-                <NavItem><StyledLink to="/multiplayer">Multiplayer</StyledLink></NavItem>
+                <NavItem><StyledLink to="/">Single Player</StyledLink></NavItem>
+                <NavItem><StyledLink to="/multiplayer">Online Multiplayer</StyledLink></NavItem>
             </NavList>
         </nav>
     </Component>

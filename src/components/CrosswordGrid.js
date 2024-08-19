@@ -275,13 +275,15 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
+    height: auto;
     width: 100vw;
-    padding: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: #f0f0f0;
     overflow: auto;
 
-    @media (max-width: 768px) {
+    @media (max-width: 668px) {
         flex-direction: column;
         align-items: center;
         padding: 10px;
@@ -301,6 +303,13 @@ const CluesContainer = styled.div`
         margin-right: 0;
         margin-bottom: 20px;
         width: 100%;
+    }
+
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
 `;
 
@@ -329,6 +338,12 @@ const GridContainer = styled.div`
     justify-content: center;
     align-items: center;
     overflow-x: auto;
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
 `;
 
 const Row = styled.div`
@@ -357,6 +372,13 @@ const GridCell = styled.div`
     @media (max-width: 480px) {
         width: 30px;
         height: 30px;
+    }
+
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
     }
 `;
 

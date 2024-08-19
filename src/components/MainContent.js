@@ -32,15 +32,11 @@ function MainContent() {
 export default MainContent
 
 const MainContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-
-    @media (max-width: 768px) {
-        flex-direction: column;
-        padding: 20px;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 `;

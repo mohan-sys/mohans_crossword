@@ -5,6 +5,7 @@ import Multiplayer from './pages/Multiplayer';
 import Feedback from './pages/Feedback';
 import ContactUs from './pages/Conatct';
 import AboutDev from './pages/AboutDev';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/about-dev" element = {<AboutDev />} />
+        <Route path="/privacy-policy" element = {<PrivacyPolicy />} />
       </Routes>
     </Router>
   );

@@ -4,21 +4,22 @@ import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function ContactUs() {
+function PrivacyPolicy() {
   return (
     <PageContainer>
         <Header />
         <NavBar />
         <ContactContainer>
-            <h2>Contact Us</h2>
+            <h2>Privacy Policy</h2>
             <ContactList>
                 <ContactItem>
-                    <h3>Mr. Mohan R Loganathan</h3>
-                    <p>Email: mohan.loganathan.2024@uni.strath.ac.uk</p>
-                </ContactItem>
-                <ContactItem>
-                    <h3>Dr. Robert Atkey</h3>
-                    <p>Email: robert.atkey@strath.ac.uk</p>
+                <p>
+                    This is the Privacy Policy for Mohan's Crossword application. We value your privacy and are committed to protecting your personal information. 
+                    
+                </p>
+                <p>
+                    This policy outlines how we collect, use, and safeguard your data used in the feedback form.
+                </p>
                 </ContactItem>
             </ContactList>
         </ContactContainer>
@@ -27,7 +28,7 @@ function ContactUs() {
   );
 }
 
-export default ContactUs;
+export default PrivacyPolicy;
 
 const fadeInUp = keyframes`
   from {

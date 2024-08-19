@@ -10,17 +10,14 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        // Join the game room
         socket.emit('joinGame', gameId);
 
-        // Receive the initial game state from the server
         socket.on('gameState', (state) => {
             if (state.grid.length > 0) {
                 setGrid(state.grid);
             }
         });
 
-        // Listen for updates to the grid from other players
         socket.on('updateGrid', ({ rowIndex, colIndex, value }) => {
             setGrid(prevGrid => {
                 const newGrid = prevGrid.map(row => row.slice());
@@ -29,7 +26,6 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
             });
         });
 
-        // Clean up the socket connection on component unmount
         return () => {
             socket.off('gameState');
             socket.off('updateGrid');
@@ -39,7 +35,7 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
 
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
-        socket.emit('inputChange', { gameId, rowIndex, colIndex, value });  // Emit the change to the server
+        socket.emit('inputChange', { gameId, rowIndex, colIndex, value });
 
         const newGrid = grid.map(row => row.slice());
         newGrid[rowIndex][colIndex] = value;
@@ -47,7 +43,6 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
 
         const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
 
-        // Move to the next cell in the highlighted word
         if (currentIndex !== -1 && currentIndex < highlightedCells.length - 1) {
             const [nextRowIndex, nextColIndex] = highlightedCells[currentIndex + 1].split('-').map(Number);
             const nextInput = document.querySelector(`input[data-row="${nextRowIndex}"][data-col="${nextColIndex}"]`);
@@ -78,8 +73,8 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
         if (nextInput) {
             nextInput.focus();
             const value = nextInput.value;
-            nextInput.setSelectionRange(value.length, value.length); // Place the cursor at the end of the text
-            e.preventDefault(); // Prevent default cursor movement
+            nextInput.setSelectionRange(value.length, value.length);
+            e.preventDefault();
         }
     };
 
@@ -102,7 +97,6 @@ function CrosswordGridMulti({ words, gridSize, gameId, socket }) {
         }
         setHighlightedCells(newHighlightedCells);
 
-        // Automatically focus the first cell of the word
         if (firstCell) {
             const [firstRowIndex, firstColIndex] = firstCell.split('-').map(Number);
             const firstInput = document.querySelector(`input[data-row="${firstRowIndex}"][data-col="${firstColIndex}"]`);
@@ -240,14 +234,42 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    height: 100vh;
+    height: auto;
     width: 100vw;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #f0f0f0;
+    overflow: auto;
+
+    @media (max-width: 668px) {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
 `;
 
 const CluesContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
 `;
 
 const CluesList = styled.div`
@@ -257,8 +279,15 @@ const CluesList = styled.div`
 const Clue = styled.div`
     margin-bottom: 5px;
     cursor: pointer;
+    color: #333;
+
     &:hover {
         text-decoration: underline;
+        color: #000;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
     }
 `;
 
@@ -267,6 +296,13 @@ const GridContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-x: auto;
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
 `;
 
 const Row = styled.div`
@@ -285,15 +321,40 @@ const GridCell = styled.div`
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? '#fff' : '#ccc')};
+    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? 'white' : '#eee')};
+
+    @media (max-width: 768px) {
+        width: 35px;
+        height: 35px;
+    }
+
+    @media (max-width: 480px) {
+        width: 30px;
+        height: 30px;
+    }
+
+    animation: fadeIn 1s ease-in-out;
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: scale(0.9); }
+        100% { opacity: 1; transform: scale(1); }
+    }
 `;
 
 const CellNumber = styled.span`
     position: absolute;
     top: 2px;
     left: 2px;
-    font-size: 13px;
-    color: #000;
+    font-size: 12px;
+    color: #333; 
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 8px;
+    }
 `;
 
 const CellInput = styled.input`
@@ -304,9 +365,18 @@ const CellInput = styled.input`
     font-size: 20px;
     text-transform: uppercase;
     background-color: transparent;
+
     &:disabled {
-        background-color: #eee;
+        background-color: grey;
         cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
     }
 `;
 
@@ -316,10 +386,24 @@ const CheckButton = styled.button`
     font-size: 16px;
     cursor: pointer;
     border: none;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #000);
     color: white;
     border-radius: 5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
     &:hover {
-        background-color: #0056b3;
+        background: linear-gradient(135deg, #0056b3, #000);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 `;
