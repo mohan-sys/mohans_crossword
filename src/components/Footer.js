@@ -19,6 +19,7 @@ export default Footer
 
 const FooterContainer = styled.footer`
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -27,22 +28,39 @@ const FooterContainer = styled.footer`
     color: white;
     position: fixed;
     bottom: 0;
-`
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+`;
 
 const NavButton = styled.button`
     background: none;
     border: none;
     color: white;
     font-size: 1rem;
-    curson: pointer;
+    cursor: pointer;
     margin: 0 10px;
-    &: hover {
+
+    &:hover {
         text-decoration: underline;
+        color: #ccc; /* Lighten the color on hover */
     }
-`
+
+    @media (max-width: 768px) {
+        margin: 5px 0;
+    }
+`;
 
 const Copyrights = styled.div`
-    font-size: 0.9 rem;
+    font-size: 0.9rem;
     text-align: right;
     margin: 0 10px;
-`
+
+    @media (max-width: 768px) {
+        text-align: left;
+        margin-top: 10px;
+    }
+`;

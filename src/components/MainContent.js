@@ -1,5 +1,6 @@
 import React from 'react';
 import CrosswordGrid from './CrosswordGrid';
+import styled from 'styled-components';
 
 function MainContent() {
 
@@ -18,7 +19,10 @@ function MainContent() {
   ];
     
   return (
-        < CrosswordGrid words = {words} gridSize = {10}/>
+    <MainContainer>
+       < CrosswordGrid words = {words} gridSize = {10}/>
+    </MainContainer>
+       
   )
 }
 
@@ -27,3 +31,16 @@ function MainContent() {
 
 export default MainContent
 
+const MainContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        padding: 20px;
+    }
+`;

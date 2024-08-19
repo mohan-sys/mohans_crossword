@@ -66,6 +66,64 @@ function CrosswordGrid({ words, gridSize }) {
         setValidatedCells(newValidatedCells);
     };
 
+    const clearPuzzle = () => {
+        const newGrid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+        setGrid(newGrid);
+        setValidatedCells({});
+    };
+
+    const revealPuzzle = () => {
+        const newGrid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+        const newValidatedCells = {};
+    
+        words.forEach(({ word, startX, startY, direction }) => {
+            if (direction === 'across') {
+                for (let i = 0; i < word.length; i++) {
+                    newGrid[startY][startX + i] = word[i];
+                    newValidatedCells[`${startY}-${startX + i}`] = true;
+                }
+            } else if (direction === 'down') {
+                for (let i = 0; i < word.length; i++) {
+                    newGrid[startY + i][startX] = word[i];
+                    newValidatedCells[`${startY + i}-${startX}`] = true;
+                }
+            }
+        });
+    
+        setGrid(newGrid);
+        setValidatedCells(newValidatedCells);
+    };
+
+    const handleRevealPuzzle = () => {
+        if (window.confirm("Are you sure you want to reveal all the answers?")) {
+            revealPuzzle();
+        }
+    };
+
+    const revealFirstLetters = () => {
+        const newGrid = [...grid];
+        const newValidatedCells = { ...validatedCells };
+    
+        words.forEach(({ word, startX, startY, direction }) => {
+            if (direction === 'across') {
+                newGrid[startY][startX] = word[0];
+                newValidatedCells[`${startY}-${startX}`] = true;
+            } else if (direction === 'down') {
+                newGrid[startY][startX] = word[0];
+                newValidatedCells[`${startY}-${startX}`] = true;
+            }
+        });
+    
+        setGrid(newGrid);
+        setValidatedCells(newValidatedCells);
+    };
+
+    const handleEasyMode = () => {
+        if (window.confirm("Do you want to switch to Easy Mode? It will reveal the first letter of all the answers.")) {
+            revealFirstLetters();
+        }
+    };
+
     const handleInputChange = (e, rowIndex, colIndex) => {
         const value = e.target.value.toUpperCase();
         const newGrid = grid.map(row => row.slice());
@@ -200,7 +258,12 @@ function CrosswordGrid({ words, gridSize }) {
             </CluesContainer>
             <GridContainer>
                 {renderGrid()}
-                <CheckButton onClick={validateAllWords}>Check Puzzle</CheckButton>
+                <ButtonContainer>
+                    <ClearButton onClick={clearPuzzle}>Clear Puzzle</ClearButton>
+                    <EasyModeButton onClick={handleEasyMode}>Easy Mode</EasyModeButton>
+                    <RevealButton onClick={handleRevealPuzzle}>Reveal Puzzle</RevealButton>
+                    <CheckButton onClick={validateAllWords}>Check Puzzle</CheckButton>
+                </ButtonContainer>
             </GridContainer>
         </Container>
     );
@@ -214,12 +277,31 @@ const Container = styled.div`
     align-items: flex-start;
     height: 100vh;
     width: 100vw;
+    padding: 20px;
+    background-color: #f0f0f0;
+    overflow: auto;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
 `;
 
 const CluesContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    @media (max-width: 768px) {
+        margin-right: 0;
+        margin-bottom: 20px;
+        width: 100%;
+    }
 `;
 
 const CluesList = styled.div`
@@ -229,8 +311,15 @@ const CluesList = styled.div`
 const Clue = styled.div`
     margin-bottom: 5px;
     cursor: pointer;
+    color: #333;
+
     &:hover {
         text-decoration: underline;
+        color: #000;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
     }
 `;
 
@@ -239,6 +328,7 @@ const GridContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-x: auto;
 `;
 
 const Row = styled.div`
@@ -257,7 +347,17 @@ const GridCell = styled.div`
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? '#fff' : '#ccc')};
+    background-color: ${props => (props.$correct ? '#a8e6cf' : props.$incorrect ? '#ff8b94' : props.$filled ? 'white' : '#eee')};
+
+    @media (max-width: 768px) {
+        width: 35px;
+        height: 35px;
+    }
+
+    @media (max-width: 480px) {
+        width: 30px;
+        height: 30px;
+    }
 `;
 
 const CellNumber = styled.span`
@@ -265,7 +365,15 @@ const CellNumber = styled.span`
     top: 2px;
     left: 2px;
     font-size: 12px;
-    color: #000;
+    color: #333; 
+
+    @media (max-width: 768px) {
+        font-size: 10px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 8px;
+    }
 `;
 
 const CellInput = styled.input`
@@ -276,9 +384,102 @@ const CellInput = styled.input`
     font-size: 20px;
     text-transform: uppercase;
     background-color: transparent;
+
     &:disabled {
-        background-color: #eee;
+        background-color: grey;
         cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 16px;
+    }
+`;
+
+const ClearButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, #ff0000, #000);
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #c82333, #000);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+`;
+
+const EasyModeButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, #28a745, #000);
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #218838, #000);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+`;
+
+const RevealButton = styled.button`
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, #ffc107, #000);
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        background: linear-gradient(135deg, #e0a800, #000);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 `;
 
@@ -288,10 +489,35 @@ const CheckButton = styled.button`
     font-size: 16px;
     cursor: pointer;
     border: none;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #000);
     color: white;
     border-radius: 5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
     &:hover {
-        background-color: #0056b3;
+        background: linear-gradient(135deg, #0056b3, #000);
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center;
     }
 `;
