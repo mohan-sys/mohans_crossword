@@ -1,7 +1,7 @@
 {
   "name": "dissertation_v4",
   "version": "0.1.0",
-  "homepage": "https://mohan-sys.github.io/mohans_crossword",  
+  "homepage": "https://mohan-sys.github.io/mohans_crossword",
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
@@ -63,10 +63,10 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "node scripts/build.js && node backend/Server.js",
     "test": "node scripts/test.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "heroku-postbuild": "npm install --prefix backend && npm run build",
+    "heroku-start": "concurrently \"npm start --prefix backend\" \"serve -s build\""
   },
   "eslintConfig": {
     "extends": [
@@ -143,6 +143,7 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "gh-pages": "^6.1.1"
   }
 }
