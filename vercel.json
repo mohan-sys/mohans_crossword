@@ -18,8 +18,12 @@
         "dest": "/backend/server.js"
       },
       {
+        "src": "/static/(.*)",
+        "dest": "/build/static/$1"
+      },
+      {
         "src": "/(.*)",
-        "dest": "/$1"
+        "dest": "/build/$1"
       }
     ]
   }

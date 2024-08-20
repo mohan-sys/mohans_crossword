@@ -15,9 +15,11 @@ const Multiplayer = () => {
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
-    const newSocket = io('http://localhost:3001', {
+    const serverURL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001';
+    const newSocket = io(serverURL, {
       withCredentials: true,
-    });
+  });
+
     socketRef.current = newSocket;
 
     newSocket.on('connect', () => {
