@@ -16,7 +16,6 @@ app.get('*', (req, res) => {
 
 const corsOptions = {
   origin: [
-    'https://mohans-crossword-9jxrpkq1e-mohan-raj-loganathans-projects.vercel.app', // Your frontend URL
     'https://mohanscrossword-mohan-raj-loganathans-projects.vercel.app', // Your backend URL
     'http://localhost:3000', // Local development URL (optional)
   ],
@@ -31,7 +30,6 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://mohans-crossword-9jxrpkq1e-mohan-raj-loganathans-projects.vercel.app', // Your frontend URL
       'https://mohanscrossword-mohan-raj-loganathans-projects.vercel.app', // Your backend URL
       'http://localhost:3000', // Local development URL (optional)
     ],
