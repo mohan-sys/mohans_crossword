@@ -17,7 +17,7 @@ app.get('*', (req, res) => {
 const corsOptions = {
   origin: process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001',
   credentials: true,
-//Headers : ["allow-control"]
+  Headers : ["Access-Control-Allow-Origin"],
   optionSuccessStatus: 200
 };
 
@@ -28,6 +28,7 @@ const io = new Server(server, {
   cors: {
     origin:process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001',
     methods: ["GET", "POST"],
+    Headers : ["Access-Control-Allow-Origin"],
     credentials: true
   }
 });
