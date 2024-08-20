@@ -20,6 +20,7 @@ const Multiplayer = () => {
       withCredentials: true,
   });
 
+  console.log(serverURL);
     socketRef.current = newSocket;
 
     newSocket.on('connect', () => {
