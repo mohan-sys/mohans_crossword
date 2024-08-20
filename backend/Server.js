@@ -15,8 +15,9 @@ app.get('*', (req, res) => {
 });
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001',
   credentials: true,
+//Headers : ["allow-control"]
   optionSuccessStatus: 200
 };
 
@@ -25,7 +26,7 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin:process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001',
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -68,6 +69,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
+server.listen(process.env.REACT_APP_SOCKET_URL || 3001, () => {
   console.log('listening on *:3001');
 });

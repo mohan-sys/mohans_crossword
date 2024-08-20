@@ -4,7 +4,7 @@ import styled, {keyframes} from 'styled-components';
 function Header() {
   return (
     <Component>
-        <Title> Mohan's new Crossword</Title>
+        <Title> Mohan's Crossword</Title>
     </Component>
   )
 }
