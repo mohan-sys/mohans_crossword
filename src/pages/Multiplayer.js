@@ -15,7 +15,7 @@ const Multiplayer = () => {
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
-    const serverURL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:3001';
+    const serverURL = 'https://mohanscrossword-mohan-raj-loganathans-projects.vercel.app' || 'http://localhost:3001';
     const newSocket = io(serverURL, {
       withCredentials: true,
   });

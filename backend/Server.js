@@ -78,6 +78,6 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(process.env.REACT_APP_SOCKET_URL || 3001, () => {
+server.listen(3001, () => {
   console.log('listening on *:3001');
 });
