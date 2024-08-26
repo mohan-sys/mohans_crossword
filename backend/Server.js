@@ -16,7 +16,7 @@ app.get('*', (req, res) => {
 
 const corsOptions = {
   origin: [
-    'https://mohans-crossword.vercel.app/api', // Your backend URL
+    'https://mohans-crossword.vercel.app', // Your backend URL
     'http://localhost:3000', // Local development URL (optional)
   ],
   credentials: true,
@@ -30,7 +30,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://mohans-crossword.vercel.app/api', // Your backend URL
+      'https://mohans-crossword.vercel.app', // Your backend URL
       'http://localhost:3000', // Local development URL (optional)
     ],
     methods: ["GET", "POST"],

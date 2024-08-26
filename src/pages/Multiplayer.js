@@ -15,7 +15,7 @@ const Multiplayer = () => {
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
-    const serverURL = 'https://mohans-crossword.vercel.app/api' || 'http://localhost:3001';
+    const serverURL = 'https://mohans-crossword.vercel.app' || 'http://localhost:3001';
     const newSocket = io(serverURL, {
       withCredentials: true,
   });
