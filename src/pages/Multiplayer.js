@@ -15,7 +15,7 @@ const Multiplayer = () => {
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
-    const serverURL = 'https://mohans-crossword.vercel.app' || 'http://localhost:3001';
+    const serverURL = 'https://mohans-crossword.vercel.app:3001' || 'http://localhost:3001';
     const newSocket = io(serverURL, {
       withCredentials: true,
   });
@@ -57,7 +57,11 @@ const Multiplayer = () => {
     console.log('Create Room Button Clicked');  // Debugging log
     if (socketRef.current) {
       console.log('Emitting createGame event');  // Debugging log
-      socketRef.current.emit('createGame');
+      socketRef.current.emit('createGame', (err) => {
+        if (err) {
+          console.error('Error creating game:', err);
+        }
+      });
     } else {
       console.log('Socket not initialized');  // Debugging log
     }
@@ -65,7 +69,11 @@ const Multiplayer = () => {
 
   const handleJoinRoom = (existingGameId) => {
     if (socketRef.current) {
-      socketRef.current.emit('joinGame', existingGameId);
+      socketRef.current.emit('joinGame', existingGameId, (err) => {
+        if (err) {
+          console.error('Error joining game:', err);
+        }
+      });
       socketRef.current.on('gameState', () => {
         setGameId(existingGameId);
         navigate(`/multiplayer?gameId=${existingGameId}`);  // Navigate to the multiplayer screen with gameId
