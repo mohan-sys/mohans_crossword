@@ -20,7 +20,7 @@ const corsOptions = {
     'http://localhost:3000', // Local development URL (optional)
   ],
   credentials: true,
-  Headers : ["Access-Control-Allow-Origin"],
+  headers : ["Access-Control-Allow-Origin"],
   optionSuccessStatus: 200
 };
 
@@ -34,7 +34,7 @@ const io = new Server(server, {
       'http://localhost:3000', // Local development URL (optional)
     ],
     methods: ["GET", "POST"],
-    Headers : ["Access-Control-Allow-Origin"],
+    headers : ["Access-Control-Allow-Origin"],
     credentials: true
   }
 });

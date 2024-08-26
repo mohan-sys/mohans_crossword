@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const [gameId, setGameId] = useState('');
-
   const handleCreate = () => {
     onCreate();
   };
