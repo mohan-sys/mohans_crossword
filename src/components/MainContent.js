@@ -79,13 +79,13 @@ const NewGameButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   border: none;
-  background: linear-gradient(135deg, #007bff, #000);
+  background: linear-gradient(135deg, #c0c0c0, #808080);
   color: white;
   border-radius: 5px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background: linear-gradient(135deg, #0056b3, #000);
+    background: linear-gradient(135deg, #a9a9a9, #696969);
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
