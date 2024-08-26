@@ -39,21 +39,18 @@ function MainContent() {
     ]
   ];
 
-  const [currentSetIndex, setCurrentSetIndex] = useState(0);
-  const [words, setWords] = useState(crosswordSets[currentSetIndex]);
+  const words = crosswordSets[gameIndex];
 
-  const loadNewGame = () => {
-    const nextSetIndex = (currentSetIndex + 1) % crosswordSets.length;
-    setCurrentSetIndex(nextSetIndex);
-    setWords(crosswordSets[nextSetIndex]);
+  const handleNewGame = () => {
+    setGameIndex((prevIndex) => (prevIndex + 1) % crosswordSets.length);
   };
 
   return (
     <MainContainer>
-      <CrosswordGrid words={words} gridSize={10} />
-      <ButtonContainer>
-        <NewGameButton onClick={loadNewGame}>New Game</NewGameButton>
-      </ButtonContainer>
+      <ContentWrapper>
+        <CrosswordGrid words={words} gridSize={10} />
+        <NewGameButton onClick={handleNewGame}>New Game</NewGameButton>
+      </ContentWrapper>
     </MainContainer>
   );
 }
@@ -64,17 +61,20 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex: 1;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
 `;
 
-const ButtonContainer = styled.div`
-  margin-top: 20px;
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const NewGameButton = styled.button`
+  margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
