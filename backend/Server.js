@@ -1,39 +1,19 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const { v4: uuidv4 } = require('uuid');
-const cors = require('cors');
-
 const app = express();
-const path = require('path');
-
-// Serve the static files from the React app
-app.use(express.static(path.join(__dirname, '..', 'build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: ['https://mohans-crossword-efmoanxnk-mohan-raj-loganathans-projects.vercel.app'],
+    credentials: true
+  }
 });
 
-const corsOptions = {
-  origin: [
-    'https://mohans-crossword.vercel.app',
-    'https://mohans-crossword-kjvlx1kxa-mohan-raj-loganathans-projects.vercel.app',
-    'http://localhost:3000',
-  ],
-  credentials: true,
-  allowedHeaders: ['Content-Type'],
-  methods: ["GET", "POST"],
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: corsOptions,
-  path: '/api/socket.io', // Important: Set this to match your Vercel API route
-  transports: ['polling'],
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://mohans-crossword-efmoanxnk-mohan-raj-loganathans-projects.vercel.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
 });
+
 
 let gameState = {};
 
@@ -72,7 +52,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 3001;  // Use the port provided by Vercel or default to 3001
+const port = process.env.PORT || 3000;  // Use the port provided by Vercel or default to 3001
 server.listen(port, () => {
   console.log(`Listening on *:${port}`);
 });

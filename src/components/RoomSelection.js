@@ -1,43 +1,40 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import io from 'socket.io-client';
 
-function RoomSelection({ onCreate, onJoin, generatedGameId }) {
+const socket = io('https://mohans-crossword.vercel.app/api/socket.io', {
+  path: '/api/socket.io',
+  withCredentials: true
+});
+
+function RoomSelection() {
   const [gameId, setGameId] = useState('');
-  const navigate = useNavigate();
+  const [generatedGameId, setGeneratedGameId] = useState('');
 
-  const handleCreate = () => {
-    onCreate();
-    navigate(`/multiplayer?gameId=${generatedGameId}`);
+  const handleCreateRoom = () => {
+    socket.emit('createGame');
   };
 
-  const handleJoin = () => {
-    if (gameId.trim()) {
-      onJoin(gameId.trim());
-      navigate(`/multiplayer?gameId=${gameId.trim()}`);
-    }
+  const handleJoinRoom = (existingGameId) => {
+    socket.emit('joinGame', existingGameId);
   };
+
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+  }, []);
 
   return (
-    <RoomSelectionContainer>
-      <Title>SELECT ROOM</Title>
-      <Button onClick={handleCreate}>Create Room</Button>
-      {generatedGameId && (
-        <GameId>
-          <p>Room Created! Share this Game ID: <strong>{generatedGameId}</strong></p>
-        </GameId>
-      )}
-      <JoinSection>
-        <OrText>or</OrText>
-        <InputBox
-          type="text"
-          placeholder="Enter Game ID"
-          value={gameId}
-          onChange={(e) => setGameId(e.target.value)}
-        />
-        <Button onClick={handleJoin}>Join Room</Button>
-      </JoinSection>
-    </RoomSelectionContainer>
+    <div>
+      <button onClick={handleCreateRoom}>Create Room</button>
+      <input type="text" value={gameId} onChange={(e) => setGameId(e.target.value)} />
+      <button onClick={() => handleJoinRoom(gameId)}>Join Room</button>
+      {generatedGameId && <p>Generated Game ID: {generatedGameId}</p>}
+    </div>
   );
 }
 
