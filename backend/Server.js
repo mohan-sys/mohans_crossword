@@ -20,6 +20,7 @@ const corsOptions = {
     'https://mohans-crossword.vercel.app', 
     'https://mohans-crossword-8vm32pvbo-mohan-raj-loganathans-projects.vercel.app', // Frontend URL
     'https://mohans-crossword-mohan-raj-loganathans-projects.vercel.app',
+    'https://mohans-crossword.vercel.app/socket.io/?EIO=4&transport=polling&t=P6LB5zD',
     'http://localhost:3000', // Local development URL (optional)
   ],
   credentials: true,
