@@ -15,7 +15,12 @@
     "routes": [
       {
         "src": "/api/(.*)",
-        "dest": "/backend/server.js"
+        "dest": "/backend/server.js",
+        "headers": {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization"
+        }
       },
       {
         "src": "/static/(.*)",
@@ -25,12 +30,5 @@
         "src": "/(.*)",
         "dest": "/build/$1"
       }
-    ],
-    "cors": {
-      "enabled": true,
-      "allowOrigins": ["*"],
-      "allowMethods": ["GET", "POST", "OPTIONS"],
-      "allowHeaders": ["Content-Type", "Authorization"],
-      "maxAge": 86400
-    }
+    ]
   }
