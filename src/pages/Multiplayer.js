@@ -3,14 +3,14 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import MainContentMultiplayer from '../components/MainContentMultiplayer';
-import RoomSelection from '../components/RoomSelection';  
+import RoomSelection from './RoomSelection';  // Import RoomSelection from the same directory
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 
 const Multiplayer = () => {
   const [gameId, setGameId] = useState(null);
   const [generatedGameId, setGeneratedGameId] = useState('');  
-  const socketRef = useRef(null);  // Use a ref to store the socket instance
+  const socketRef = React.useRef(null);  // Use a ref to store the socket instance
   const navigate = useNavigate();  // Initialize the navigate function
 
   useEffect(() => {
