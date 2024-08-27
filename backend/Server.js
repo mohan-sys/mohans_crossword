@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
   });
 });
 
-const port = process.env.PORT || 3000;  // Use the port provided by Vercel or default to 3001
+const port = process.env.PORT || 3001;  // Use the port provided by Vercel or default to 3001
 server.listen(port, () => {
   console.log(`Listening on *:${port}`);
 });
