@@ -14,40 +14,29 @@ const Multiplayer = () => {
   const navigate = useNavigate();  // Initialize the navigate function
 
   useEffect(() => {
-    // Initialize socket connection once when the component mounts
-    const serverURL = 'https://mohans-crossword.vercel.app'; // No port needed, use https
+    const serverURL = 'https://mohans-crossword.vercel.app/api'; // Update this to match your Vercel configuration
     const newSocket = io(serverURL, {
+      path: '/api/socket.io', // Make sure the path matches the server
       withCredentials: true,
     });
-
+  
     console.log(serverURL);
     socketRef.current = newSocket;
-
+  
     newSocket.on('connect', () => {
-      console.log('Socket connected:', newSocket.id);  // Should print a valid socket id
+      console.log('Socket connected:', newSocket.id);
     });
-
+  
     newSocket.on('connect_error', (err) => {
-      console.error('Socket connection error:', err.message);  // Handle connection errors
+      console.error('Socket connection error:', err.message);
     });
-
+  
     newSocket.on('disconnect', (reason) => {
-      console.log('Socket disconnected:', reason);  // Log reason for disconnection
+      console.log('Socket disconnected:', reason);
     });
-
-    // Set up the listener for game creation only once
-    newSocket.on('gameCreated', (newGameId) => {
-      console.log('Game Created Event Triggered');  // Debugging log
-      console.log('Game Id: ', newGameId);
-      setGameId(newGameId);
-      setGeneratedGameId(newGameId);
-      navigate(`/multiplayer?gameId=${newGameId}`);  // Navigate to the multiplayer screen with gameId
-    });
-
-    // Clean up the socket connection only if the component unmounts
+  
     return () => {
       if (newSocket.connected) {
-        console.log('Socket disconnected:', newSocket.id);  // Debugging log
         newSocket.disconnect();
       }
     };
