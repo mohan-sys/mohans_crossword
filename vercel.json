@@ -25,5 +25,12 @@
         "src": "/(.*)",
         "dest": "/build/$1"
       }
-    ]
+    ],
+    "cors": {
+      "enabled": true,
+      "allowOrigins": ["*"],
+      "allowMethods": ["GET", "POST", "OPTIONS"],
+      "allowHeaders": ["Content-Type", "Authorization"],
+      "maxAge": 86400
+    }
   }

@@ -14,7 +14,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 let gameState = {};
 
 io.on('connection', (socket) => {
