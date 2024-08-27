@@ -1,20 +1,16 @@
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const [gameId, setGameId] = useState('');
-  const navigate = useNavigate();
-
   const handleCreate = () => {
     onCreate();
-    navigate(`/multiplayer?gameId=${generatedGameId}`);
   };
 
   const handleJoin = () => {
     if (gameId.trim()) {
       onJoin(gameId.trim());
-      navigate(`/multiplayer?gameId=${gameId.trim()}`);
     }
   };
 
