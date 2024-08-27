@@ -15,12 +15,12 @@ const Multiplayer = () => {
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
-    const serverURL = 'https://mohans-crossword.vercel.app:3001' || 'http://localhost:3001';
+    const serverURL = 'https://mohans-crossword.vercel.app'; // No port needed, use https
     const newSocket = io(serverURL, {
       withCredentials: true,
-  });
+    });
 
-  console.log(serverURL);
+    console.log(serverURL);
     socketRef.current = newSocket;
 
     newSocket.on('connect', () => {

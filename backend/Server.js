@@ -16,22 +16,25 @@ app.get('*', (req, res) => {
 
 const corsOptions = {
   origin: [
-    'https://mohans-crossword.vercel.app', 
-    'https://mohans-crossword-8vm32pvbo-mohan-raj-loganathans-projects.vercel.app', // Frontend URL
+    'https://mohans-crossword.vercel.app',
     'http://localhost:3000', // Local development URL (optional)
   ],
   credentials: true,
   allowedHeaders: ['Content-Type'],
   methods: ["GET", "POST"],
-  optionSuccessStatus: 200
+  optionSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: corsOptions,
-  transports: ['polling'], // Add this line to enable polling transport
+  cors: {
+    origin: corsOptions.origin,
+    methods: corsOptions.methods,
+    credentials: corsOptions.credentials,
+  },
+  transports: ['polling'],
 });
 
 let gameState = {};
@@ -71,6 +74,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3001, () => {
-  console.log('listening on *:3001');
+const port = process.env.PORT || 3001;  // Use the port provided by Vercel or default to 3001
+server.listen(port, () => {
+  console.log(`Listening on *:${port}`);
 });
