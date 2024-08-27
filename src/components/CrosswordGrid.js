@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 function CrosswordGrid({ words, gridSize }) {
@@ -9,6 +9,28 @@ function CrosswordGrid({ words, gridSize }) {
 
     const [highlightedCells, setHighlightedCells] = useState([]);
     const [validatedCells, setValidatedCells] = useState({});
+
+    const cellNumbers = {};
+    const acrossClues = [];
+    const downClues = [];
+
+    let nextNumber = 1;
+
+    words.forEach(({ word, startX, startY, direction, clue }) => {
+        const cellKey = `${startY}-${startX}`;
+
+        if (!cellNumbers[cellKey]) {
+            cellNumbers[cellKey] = nextNumber++;
+        }
+
+        const number = cellNumbers[cellKey];
+
+        if (direction === 'across') {
+            acrossClues.push({ number, clue, word, startX, startY });
+        } else {
+            downClues.push({ number, clue, word, startX, startY });
+        }
+    });
 
     // Load grid from local storage if available
     useEffect(() => {
