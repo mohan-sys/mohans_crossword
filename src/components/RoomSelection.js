@@ -5,6 +5,7 @@ function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const [gameId, setGameId] = useState('');
   const handleCreate = () => {
     onCreate();
+    navigate(`/multiplayer?gameId=${generatedGameId}`);
   };
 
   const handleJoin = () => {
@@ -12,6 +13,8 @@ function RoomSelection({ onCreate, onJoin, generatedGameId }) {
       onJoin(gameId.trim());
     }
   };
+
+
 
   return (
     <RoomSelectionContainer>
