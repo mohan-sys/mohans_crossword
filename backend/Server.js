@@ -16,9 +16,9 @@ app.get('*', (req, res) => {
 
 const corsOptions = {
   origin: [
-    'https://mohans-crossword.vercel.app', 
-    'https://mohans-crossword-lzclyvr9f-mohan-raj-loganathans-projects.vercel.app', 
-    'http://localhost:3000', // Local development URL
+    'https://mohans-crossword.vercel.app',
+    'https://mohans-crossword-kjvlx1kxa-mohan-raj-loganathans-projects.vercel.app',
+    'http://localhost:3000',
   ],
   credentials: true,
   allowedHeaders: ['Content-Type'],
@@ -31,7 +31,7 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: corsOptions,
-  path: '/api/socket.io', // Update this line to match the API path
+  path: '/api/socket.io', // Important: Set this to match your Vercel API route
   transports: ['polling'],
 });
 

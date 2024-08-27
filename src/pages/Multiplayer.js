@@ -14,9 +14,9 @@ const Multiplayer = () => {
   const navigate = useNavigate();  // Initialize the navigate function
 
   useEffect(() => {
-    const serverURL = 'https://mohans-crossword.vercel.app/api'; // Update this to match your Vercel configuration
+    const serverURL = 'https://mohans-crossword.vercel.app';
     const newSocket = io(serverURL, {
-      path: '/api/socket.io', // Make sure the path matches the server
+      path: '/api/socket.io', // Make sure this path matches your server
       withCredentials: true,
     });
   
