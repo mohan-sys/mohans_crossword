@@ -85,10 +85,22 @@ const NewGameButton = styled.button`
   color: white;
   border-radius: 5px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeIn 1s ease-in-out; /* Added animation */
 
   &:hover {
     background: linear-gradient(135deg, #a9a9a9, #696969);
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
