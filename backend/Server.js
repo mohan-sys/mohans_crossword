@@ -21,7 +21,7 @@ const corsOptions = {
     'http://localhost:3000', // Local development URL (optional)
   ],
   credentials: true,
-  allowedHeaders : ['Access-Control-Allow-Origin', 'Content-Type'],
+  allowedHeaders: ['Content-Type'],
   methods: ["GET", "POST"],
   optionSuccessStatus: 200
 };
@@ -31,6 +31,7 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: corsOptions,
+  transports: ['polling'], // Add this line to enable polling transport
 });
 
 let gameState = {};
