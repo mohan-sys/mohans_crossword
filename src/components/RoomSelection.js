@@ -11,6 +11,7 @@ function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const handleJoin = () => {
     if (gameId.trim()) {
       onJoin(gameId.trim());
+      navigate(`/multiplayer?gameId=${gameId.trim()}`);
     }
   };
 
