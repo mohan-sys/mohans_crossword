@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import MainContentMultiplayer from '../components/MainContentMultiplayer';
-import RoomSelection from './RoomSelection';  // Import RoomSelection from the same directory
+import RoomSelection from '../components/RoomSelection';  // Import RoomSelection from the same directory
 import io from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 
