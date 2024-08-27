@@ -1,76 +1,103 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Footer from '../components/Footer';
+import MainContentMultiplayer from '../components/MainContentMultiplayer';
+import RoomSelection from '../components/RoomSelection';  
 import io from 'socket.io-client';
-import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
-const socket = io('https://mohans-crossword.vercel.app', {
-  withCredentials: true,
-  transports: ['polling'],
-});
-
-function Multiplayer() {
-  const [gameId, setGameId] = useState('');
-  const [gameState, setGameState] = useState({ grid: Array(10).fill().map(() => Array(10).fill('')), users: [] });
-  const [username, setUsername] = useState('');
-  const [error, setError] = useState(null);
+const Multiplayer = () => {
+  const [gameId, setGameId] = useState(null);
+  const [generatedGameId, setGeneratedGameId] = useState('');  
+  const socketRef = useRef(null);  // Use a ref to store the socket instance
+  const navigate = useNavigate();  // Initialize the navigate function
 
   useEffect(() => {
-    socket.on('gameCreated', (gameId) => {
-      setGameId(gameId);
+    // Initialize socket connection once when the component mounts
+    const serverURL = 'https://mohans-crossword.vercel.app:3001' || 'http://localhost:3001';
+    const newSocket = io(serverURL, {
+      withCredentials: true,
+  });
+
+  console.log(serverURL);
+    socketRef.current = newSocket;
+
+    newSocket.on('connect', () => {
+      console.log('Socket connected:', newSocket.id);  // Should print a valid socket id
     });
 
-    socket.on('gameState', (gameState) => {
-      setGameState(gameState);
+    newSocket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err.message);  // Handle connection errors
     });
 
-    socket.on('error', (error) => {
-      setError(error);
+    newSocket.on('disconnect', (reason) => {
+      console.log('Socket disconnected:', reason);  // Log reason for disconnection
     });
-  }, [socket]);
 
-  const handleCreateGame = () => {
-    socket.emit('createGame');
+    // Set up the listener for game creation only once
+    newSocket.on('gameCreated', (newGameId) => {
+      console.log('Game Created Event Triggered');  // Debugging log
+      console.log('Game Id: ', newGameId);
+      setGameId(newGameId);
+      setGeneratedGameId(newGameId);
+      navigate(`/multiplayer?gameId=${newGameId}`);  // Navigate to the multiplayer screen with gameId
+    });
+
+    // Clean up the socket connection only if the component unmounts
+    return () => {
+      if (newSocket.connected) {
+        console.log('Socket disconnected:', newSocket.id);  // Debugging log
+        newSocket.disconnect();
+      }
+    };
+  }, [navigate]);
+
+  const handleCreateRoom = () => {
+    console.log('Create Room Button Clicked');  // Debugging log
+    if (socketRef.current) {
+      console.log('Emitting createGame event');  // Debugging log
+      socketRef.current.emit('createGame', (err) => {
+        if (err) {
+          console.error('Error creating game:', err);
+        }
+      });
+    } else {
+      console.log('Socket not initialized');  // Debugging log
+    }
   };
 
-  const handleJoinGame = (gameId) => {
-    socket.emit('joinGame', gameId);
+  const handleJoinRoom = (existingGameId) => {
+    if (socketRef.current) {
+      socketRef.current.emit('joinGame', existingGameId, (err) => {
+        if (err) {
+          console.error('Error joining game:', err);
+        }
+      });
+      socketRef.current.on('gameState', () => {
+        setGameId(existingGameId);
+        navigate(`/multiplayer?gameId=${existingGameId}`);  // Navigate to the multiplayer screen with gameId
+      });
+      socketRef.current.on('error', (message) => {
+        alert(message);
+      });
+    }
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
+  if (!gameId) {
+    return <RoomSelection onCreate={handleCreateRoom} onJoin={handleJoinRoom} generatedGameId={generatedGameId} />;
+  }
 
   return (
-    <BrowserRouter>
+    <div>
       <Header />
       <NavBar />
-      <Switch>
-        <Route path="/create-game">
-          <button onClick={handleCreateGame}>Create Game</button>
-        </Route>
-        <Route path="/join-game">
-          <input type="text" value={username} onChange={handleUsernameChange} placeholder="Enter username" />
-          <button onClick={() => handleJoinGame(uuidv4())}>Join Game</button>
-        </Route>
-        <Route path="/game">
-          {gameId && (
-            <div>
-              <h1>Game ID: {gameId}</h1>
-              <p>Game State:</p>
-              <pre>{JSON.stringify(gameState, null, 2)}</pre>
-            </div>
-          )}
-          {error && (
-            <div>
-              <h1>Error: {error}</h1>
-            </div>
-          )}
-        </Route>
-      </Switch>
-    </BrowserRouter>
+      <p>Your game Id is: {gameId}</p>
+      <p>Please Copy this game Id and share it with your friend</p>
+      <MainContentMultiplayer gameId={gameId} socket={socketRef.current} />
+      <Footer />
+    </div>
   );
-}
+};
 
 export default Multiplayer;
