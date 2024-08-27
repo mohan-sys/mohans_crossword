@@ -32,23 +32,7 @@ function CrosswordGrid({ words, gridSize }) {
         }
     });
 
-    // Load grid from local storage if available
-    useEffect(() => {
-        const savedGrid = localStorage.getItem('crossword-grid');
-        const savedValidatedCells = localStorage.getItem('crossword-validated-cells');
-        if (savedGrid) {
-            setGrid(JSON.parse(savedGrid));
-        }
-        if (savedValidatedCells) {
-            setValidatedCells(JSON.parse(savedValidatedCells));
-        }
-    }, []);
-
-    // Save grid to local storage whenever it changes
-    useEffect(() => {
-        localStorage.setItem('crossword-grid', JSON.stringify(grid));
-        localStorage.setItem('crossword-validated-cells', JSON.stringify(validatedCells));
-    }, [grid, validatedCells]);
+    
 
     const validateAllWords = () => {
         const newValidatedCells = { ...validatedCells };
