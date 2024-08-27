@@ -1,40 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-const socket = io('https://mohans-crossword.vercel.app/api/socket.io', {
-  path: '/api/socket.io',
-  withCredentials: true
-});
-
-function RoomSelection() {
+function RoomSelection({ onCreate, onJoin, generatedGameId }) {
   const [gameId, setGameId] = useState('');
-  const [generatedGameId, setGeneratedGameId] = useState('');
+  const navigate = useNavigate();
 
-  const handleCreateRoom = () => {
-    socket.emit('createGame');
+  const handleCreate = () => {
+    onCreate();
+    navigate(`/multiplayer?gameId=${generatedGameId}`);
   };
 
-  const handleJoinRoom = (existingGameId) => {
-    socket.emit('joinGame', existingGameId);
+  const handleJoin = () => {
+    if (gameId.trim()) {
+      onJoin(gameId.trim());
+      navigate(`/multiplayer?gameId=${gameId.trim()}`);
+    }
   };
-
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
-
-    socket.on('disconnect', () => {
-      console.log('Disconnected from server');
-    });
-  }, []);
 
   return (
-    <div>
-      <button onClick={handleCreateRoom}>Create Room</button>
-      <input type="text" value={gameId} onChange={(e) => setGameId(e.target.value)} />
-      <button onClick={() => handleJoinRoom(gameId)}>Join Room</button>
-      {generatedGameId && <p>Generated Game ID: {generatedGameId}</p>}
-    </div>
+    <RoomSelectionContainer>
+      <Title>SELECT ROOM</Title>
+      <Button onClick={handleCreate}>Create Room</Button>
+      {generatedGameId && (
+        <GameId>
+          <p>Room Created! Share this Game ID: <strong>{generatedGameId}</strong></p>
+        </GameId>
+      )}
+      <JoinSection>
+        <OrText>or</OrText>
+        <InputBox
+          type="text"
+          placeholder="Enter Game ID"
+          value={gameId}
+          onChange={(e) => setGameId(e.target.value)}
+        />
+        <Button onClick={handleJoin}>Join Room</Button>
+      </JoinSection>
+    </RoomSelectionContainer>
   );
 }
 
