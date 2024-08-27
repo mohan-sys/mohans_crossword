@@ -17,7 +17,7 @@
             "src": "/api/(.*)",
             "dest": "/backend/server.js",
             "headers": {
-              "Access-Control-Allow-Origin": "https://mohans-crossword-irjxuqeql-mohan-raj-loganathans-projects.vercel.app",
+              "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
               "Access-Control-Allow-Headers": "Content-Type, Authorization"
             }
