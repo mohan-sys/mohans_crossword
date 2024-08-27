@@ -9,8 +9,8 @@ const io = require('socket.io')(server, {
 });
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://mohans-crossword-efmoanxnk-mohan-raj-loganathans-projects.vercel.app');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
