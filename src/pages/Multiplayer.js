@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
-import NavBar from '../components/ NavBar';
+import NavBar from '../components/NavBar';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid';
