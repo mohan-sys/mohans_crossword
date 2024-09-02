@@ -90,9 +90,9 @@ const ContentWrapper = styled.div`
 `;
 
 const NewGameButton = styled.button`
-  padding: 5px 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-top: 20px;
-  padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border: none;
@@ -100,7 +100,7 @@ const NewGameButton = styled.button`
   color: white;
   border-radius: 5px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  animation: fadeIn 1s ease-in-out; /* Added animation */
+  animation: fadeIn 1s ease-in-out;
 
   &:hover {
     background: linear-gradient(135deg, #a9a9a9, #696969);
