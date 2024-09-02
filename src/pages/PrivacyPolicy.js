@@ -14,11 +14,16 @@ function PrivacyPolicy() {
             <ContactList>
                 <ContactItem>
                 <p>
-                    This is the Privacy Policy for Mohan's Crossword application. We value your privacy and are committed to protecting your personal information. 
-                    
+                  My name is Mr. Mohan Raj Loganathan and I am a MSc Advanced Computer Science student at the
+                  Department of Computer and Information Sciences at the University of Strathclyde. I am leading a
+                  dissertation project focused on singleplayer and multiplayer crossword based web-app.   
                 </p>
                 <p>
-                    This policy outlines how we collect, use, and safeguard your data used in the feedback form.
+                  This study's purpose is to learn from the knowledge, expertise and insight of various professional
+                  stakeholders to help identify key user requirements for the web application's development. The online
+                  form (the only form of data collection) helps to clearly understand the needs and responses of the
+                  users after playing the crossword game. The feedback received from the user will be useful in fixing
+                  bugs and developing changes in the application to create a better version of the existing application.
                 </p>
                 </ContactItem>
             </ContactList>
