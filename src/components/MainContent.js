@@ -97,7 +97,7 @@ const NewGameButton = styled.button`
   cursor: pointer;
   border: none;
   background: linear-gradient(135deg, #9370DB, #FFB6C1);
-  color: black;
+  color: white;
   border-radius: 5px;
   transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
   animation: fadeIn 1s ease-in-out;
