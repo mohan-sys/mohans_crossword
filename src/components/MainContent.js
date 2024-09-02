@@ -90,8 +90,8 @@ const ContentWrapper = styled.div`
 `;
 
 const NewGameButton = styled.button`
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 8px 16px;  
+  height: auto; 
   margin-top: 20px;
   font-size: 16px;
   cursor: pointer;
