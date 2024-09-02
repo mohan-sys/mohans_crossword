@@ -30,14 +30,14 @@ function MainContent() {
     ],
     [
       // Third set of words
-      { word: 'STAR', startX: 0, startY: 0, direction: 'across', clue: 'A luminous point in the night sky' },
-      { word: 'FIRE', startX: 0, startY: 2, direction: 'across', clue: 'A rapid oxidation process, releasing heat' },
-      { word: 'EGG', startX: 0, startY: 4, direction: 'across', clue: 'An oval or round object laid by birds' },
-      { word: 'MOON', startX: 0, startY: 6, direction: 'across', clue: 'A natural satellite of the Earth' },
-      { word: 'PLANET', startX: 6, startY: 0, direction: 'down', clue: 'A celestial body orbiting a star' },
+      { word: 'STAR', startX: 0, startY: 2, direction: 'across', clue: 'A luminous point in the night sky' },
+      { word: 'FIRE', startX: 3, startY: 0, direction: 'down', clue: 'A rapid oxidation process, releasing heat' },
+      { word: 'EGG', startX: 0, startY: 4, direction: 'down', clue: 'An oval or round object laid by birds' },
+      { word: 'MOON', startX: 6, startY: 8, direction: 'across', clue: 'A natural satellite of the Earth' },
+      { word: 'PLANET', startX: 6, startY: 1, direction: 'down', clue: 'A celestial body orbiting a star' },
       { word: 'TREE', startX: 8, startY: 0, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' },
-      { word: 'RAIN', startX: 9, startY: 1, direction: 'down', clue: 'Water that falls from clouds in droplets' },
-      { word: 'WIND', startX: 7, startY: 2, direction: 'down', clue: 'The perceptible natural movement of the air' },
+      { word: 'RAIN', startX: 9, startY: 5, direction: 'down', clue: 'Water that falls from clouds in droplets' },
+      { word: 'WIND', startX: 4, startY: 4, direction: 'across', clue: 'The perceptible natural movement of the air' },
     ],
   ];
 
