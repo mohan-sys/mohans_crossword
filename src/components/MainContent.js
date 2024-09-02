@@ -50,11 +50,12 @@ function MainContent() {
   return (
     <MainContainer>
       <ContentWrapper>
+        
+        <CrosswordGrid words={words} gridSize={10} />
+        <NewGameButton onClick={handleNewGame}>New Game</NewGameButton>
         <p>Little tip:</p>
         <p>Click on the Hint and let it do the magic of taking you to the corresponding grid.</p>
         <p>Desktop users can effortlessly glide through the crossword by using the arrow keys to navigate between cells.</p>
-        <CrosswordGrid words={words} gridSize={10} />
-        <NewGameButton onClick={handleNewGame}>New Game</NewGameButton>
       </ContentWrapper>
     </MainContainer>
   );
