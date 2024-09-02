@@ -8,14 +8,14 @@ function MainContent() {
   const crosswordSets = [
     [
       // First set of words
-      { word: 'WAVE', startX: 0, startY: 0, direction: 'across', clue: 'A disturbance that travels through space and matter' },
-      { word: 'FIRE', startX: 0, startY: 2, direction: 'across', clue: 'A rapid oxidation process, releasing heat' },
-      { word: 'EGG', startX: 0, startY: 4, direction: 'across', clue: 'An oval or round object laid by birds' },
-      { word: 'MOON', startX: 0, startY: 6, direction: 'across', clue: 'A natural satellite of the Earth' },
-      { word: 'BEAR', startX: 6, startY: 0, direction: 'down', clue: 'A large, heavy mammal with thick fur' },
-      { word: 'TREE', startX: 8, startY: 0, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' },
-      { word: 'RAIN', startX: 9, startY: 1, direction: 'down', clue: 'Water that falls from clouds in droplets' },
-      { word: 'WIND', startX: 7, startY: 2, direction: 'down', clue: 'The perceptible natural movement of the air' },
+      { word: 'WAVE', startX: 1, startY: 1, direction: 'across', clue: 'A disturbance that travels through space and matter' },
+      { word: 'FIRE', startX: 7, startY: 0, direction: 'across', clue: 'A rapid oxidation process, releasing heat' },
+      { word: 'EGG', startX: 3, startY: 7, direction: 'down', clue: 'An oval or round object laid by birds' },
+      { word: 'MOON', startX: 5, startY: 3, direction: 'across', clue: 'A natural satellite of the Earth' },
+      { word: 'BEAR', startX: 4, startY: 0, direction: 'down', clue: 'A large, heavy mammal with thick fur' },
+      { word: 'TREE', startX: 8, startY: 1, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' },
+      { word: 'RAIN', startX: 9, startY: 5, direction: 'down', clue: 'Water that falls from clouds in droplets' },
+      { word: 'WIND', startX: 6, startY: 3, direction: 'down', clue: 'The perceptible natural movement of the air' },
     ],
     [
       // Second set of words
