@@ -18,9 +18,7 @@ function AboutDev() {
             <a href="https://www.linkedin.com/in/mohanrajloganathan/" target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
-            <a href="https://github.com/mohan-sys" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+            
           </Links>
         </DeveloperInfo>
       </AboutContainer>
