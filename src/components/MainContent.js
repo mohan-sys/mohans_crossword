@@ -20,13 +20,13 @@ function MainContent() {
     [
       // Second set of words
       { word: 'SUN', startX: 0, startY: 0, direction: 'across', clue: 'The star at the center of our solar system' },
-      { word: 'EARTH', startX: 0, startY: 2, direction: 'across', clue: 'The planet we live on' },
-      { word: 'SEA', startX: 0, startY: 4, direction: 'across', clue: 'A large body of saltwater' },
-      { word: 'WIND', startX: 0, startY: 6, direction: 'across', clue: 'Air in motion relative to the surface of the earth' },
-      { word: 'MARS', startX: 6, startY: 0, direction: 'down', clue: 'The red planet' },
-      { word: 'TREE', startX: 8, startY: 0, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' },
+      { word: 'EARTH', startX: 3, startY: 2, direction: 'across', clue: 'The planet we live on' },
+      { word: 'SEA', startX: 0, startY: 0, direction: 'down', clue: 'A large body of saltwater' },
+      { word: 'WIND', startX: 5, startY: 8, direction: 'across', clue: 'Air in motion relative to the surface of the earth' },
+      { word: 'MARS', startX: 4, startY: 1, direction: 'down', clue: 'The red planet' },
+      { word: 'TREE', startX: 6, startY: 2, direction: 'down', clue: 'A perennial plant with an elongated stem or trunk' },
       { word: 'RAIN', startX: 9, startY: 1, direction: 'down', clue: 'Water that falls from clouds in droplets' },
-      { word: 'BIRD', startX: 7, startY: 2, direction: 'down', clue: 'A warm-blooded egg-laying vertebrate animal' },
+      { word: 'BIRD', startX: 8, startY: 5, direction: 'down', clue: 'A warm-blooded egg-laying vertebrate animal' },
     ],
     [
       // Third set of words
