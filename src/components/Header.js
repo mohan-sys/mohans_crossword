@@ -27,29 +27,29 @@ const Component = styled.div`
   text-align: center;
   justify-content: center;
   align-items: center;
-  height: 8vh; /* Reduced height for a sleeker header */
-  background: linear-gradient(90deg, #e0e0e0, #f5f5f5); /* Subtle grey and white gradient */
+  height: 8vh; 
+  background: linear-gradient(90deg, #e0e0e0, #f5f5f5); 
 
   @media (max-width: 768px) {
-    height: 10vh; /* Increase height slightly on smaller screens */
+    height: 10vh; 
   }
 
   @media (max-width: 480px) {
-    height: 12vh; /* Further increase height for very small screens */
+    height: 12vh; 
   }
 `;
 
 const Title = styled.h1`
   font-size: 2.5rem;
-  color: #333; /* Dark grey for the title text */
+  color: #333; 
   animation: ${fadeInAndScale} 1.5s ease-out;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Modern, clean font */
 
   @media (max-width: 768px) {
-    font-size: 2rem; /* Slightly smaller font on tablets */
+    font-size: 2rem; 
   }
 
   @media (max-width: 480px) {
-    font-size: 1.5rem; /* Even smaller font on mobile phones */
+    font-size: 1.5rem; 
   }
 `;

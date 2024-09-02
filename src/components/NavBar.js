@@ -25,9 +25,9 @@ const Component = styled.div`
   font-size: 1.5rem;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5; /* Light grey background */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  padding: 0 1rem; /* Add padding for smaller screens */
+  background-color: #f5f5f5; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  padding: 0 1rem;
 
   @media (max-width: 768px) {
     height: auto;
@@ -40,11 +40,11 @@ const NavList = styled.ul`
   padding: 0;
   display: flex;
   margin: 0;
-  gap: 2rem; /* Increase gap for more modern spacing */
+  gap: 2rem; 
 
   @media (max-width: 768px) {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    gap: 1rem; /* Reduce gap on smaller screens */
+    flex-direction: column; 
+    gap: 1rem; 
   }
 `;
 
@@ -54,7 +54,7 @@ const NavItem = styled.li`
   justify-content: center;
 
   @media (max-width: 768px) {
-    width: 100%; /* Make the items take full width on smaller screens */
+    width: 100%; 
   }
 `;
 
@@ -63,19 +63,19 @@ const StyledLink = styled(Link)`
   padding: 0.5rem 1rem;
   border-radius: 5px;
   text-decoration: none; 
-  font-weight: 500; /* Slightly bolder text for emphasis */
-  transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition for hover effect */
+  font-weight: 500;
+  transition: color 0.3s ease, background-color 0.3s ease; 
 
   &:hover {
-    color: #000; /* Change text to black on hover */
-    background-color: #e0e0e0; /* Light grey background on hover */
+    color: #000; 
+    background-color: #e0e0e0;
     text-decoration: none;
   }
 
   @media (max-width: 768px) {
-    padding: 0.75rem 1rem; /* Increase padding on smaller screens */
+    padding: 0.75rem 1rem; 
     text-align: center;
     display: block;
-    width: 100%; /* Ensure full width for better touch targets */
+    width: 100%; 
   }
 `;

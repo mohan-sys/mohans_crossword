@@ -12,7 +12,7 @@ const Multiplayer = () => {
   const [gameId, setGameId] = useState(null);
   const [generatedGameId, setGeneratedGameId] = useState('');  
   const socketRef = useRef(null);  // Use a ref to store the socket instance
-  const navigate = useNavigate();  // Initialize the navigate function
+  const navigate = useNavigate();  
 
   useEffect(() => {
     // Initialize socket connection once when the component mounts
@@ -25,42 +25,42 @@ const Multiplayer = () => {
     socketRef.current = newSocket;
 
     newSocket.on('connect', () => {
-      console.log('Socket connected:', newSocket.id);  // Should print a valid socket id
+      console.log('Socket connected:', newSocket.id);  
     });
 
     newSocket.on('connect_error', (err) => {
-      console.error('Socket connection error:', err.message);  // Handle connection errors
+      console.error('Socket connection error:', err.message);  
     });
 
     newSocket.on('disconnect', (reason) => {
-      console.log('Socket disconnected:', reason);  // Log reason for disconnection
+      console.log('Socket disconnected:', reason);  
     });
 
     // Set up the listener for game creation only once
     newSocket.on('gameCreated', (newGameId) => {
-      console.log('Game Created Event Triggered');  // Debugging log
+      console.log('Game Created Event Triggered');  
       console.log('Game Id: ', newGameId);
       setGameId(newGameId);
       setGeneratedGameId(newGameId);
-      navigate(`/multiplayer?gameId=${newGameId}`);  // Navigate to the multiplayer screen with gameId
+      navigate(`/multiplayer?gameId=${newGameId}`); 
     });
 
     // Clean up the socket connection only if the component unmounts
     return () => {
       if (newSocket.connected) {
-        console.log('Socket disconnected:', newSocket.id);  // Debugging log
+        console.log('Socket disconnected:', newSocket.id);  
         newSocket.disconnect();
       }
     };
   }, [navigate]);
 
   const handleCreateRoom = () => {
-    console.log('Create Room Button Clicked');  // Debugging log
+    console.log('Create Room Button Clicked');  
     if (socketRef.current) {
-      console.log('Emitting createGame event');  // Debugging log
+      console.log('Emitting createGame event');  
       socketRef.current.emit('createGame');
     } else {
-      console.log('Socket not initialized');  // Debugging log
+      console.log('Socket not initialized');  
     }
   };
 
@@ -69,7 +69,7 @@ const Multiplayer = () => {
       socketRef.current.emit('joinGame', existingGameId);
       socketRef.current.on('gameState', () => {
         setGameId(existingGameId);
-        navigate(`/multiplayer?gameId=${existingGameId}`);  // Navigate to the multiplayer screen with gameId
+        navigate(`/multiplayer?gameId=${existingGameId}`);  
       });
       socketRef.current.on('error', (message) => {
         alert(message);

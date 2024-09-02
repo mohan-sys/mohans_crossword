@@ -7,7 +7,6 @@ function MainContent() {
 
   const crosswordSets = [
     [
-      // First set of words
       { word: 'WAVE', startX: 1, startY: 1, direction: 'across', clue: 'A disturbance that travels through space and matter' },
       { word: 'FIRE', startX: 0, startY: 7, direction: 'across', clue: 'A rapid oxidation process, releasing heat' },
       { word: 'EGG', startX: 3, startY: 7, direction: 'down', clue: 'An oval or round object laid by birds' },
@@ -18,7 +17,6 @@ function MainContent() {
       { word: 'WIND', startX: 6, startY: 3, direction: 'down', clue: 'The perceptible natural movement of the air' },
     ],
     [
-      // Second set of words
       { word: 'SUN', startX: 0, startY: 0, direction: 'across', clue: 'The star at the center of our solar system' },
       { word: 'EARTH', startX: 3, startY: 2, direction: 'across', clue: 'The planet we live on' },
       { word: 'SEA', startX: 0, startY: 0, direction: 'down', clue: 'A large body of saltwater' },
@@ -29,7 +27,6 @@ function MainContent() {
       { word: 'BIRD', startX: 8, startY: 5, direction: 'down', clue: 'A warm-blooded egg-laying vertebrate animal' },
     ],
     [
-      // Third set of words
       { word: 'STAR', startX: 0, startY: 2, direction: 'across', clue: 'A luminous point in the night sky' },
       { word: 'FIRE', startX: 3, startY: 0, direction: 'down', clue: 'A rapid oxidation process, releasing heat' },
       { word: 'EGG', startX: 0, startY: 4, direction: 'down', clue: 'An oval or round object laid by birds' },

@@ -143,7 +143,7 @@ function CrosswordGrid({ words, gridSize }) {
             }
         }
     };
-
+// Use of Arrow Keys
     const handleKeyDown = (e, rowIndex, colIndex) => {
         const currentIndex = highlightedCells.indexOf(`${rowIndex}-${colIndex}`);
         let nextInput;
