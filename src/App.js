@@ -6,11 +6,13 @@ import Feedback from './pages/Feedback';
 import ContactUs from './pages/Conatct';
 import AboutDev from './pages/AboutDev';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import { Analytics } from '@vercel/analytics/next';
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Analytics />
         <Route path="/" element={<Home />} />
         <Route path="/multiplayer" element={<Multiplayer />} />
         <Route path="/feedback" element={<Feedback />} />
